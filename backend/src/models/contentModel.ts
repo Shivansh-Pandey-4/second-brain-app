@@ -5,7 +5,7 @@ const contentSchema = new mongoose.Schema({
         type : {
             type : String,
             enum : { 
-                values : ["tweet","document","link","youtube","random","brain_Thought"],
+                values : ["tweet","document","link","youtube","random","brain thought"],
                 message : `invalid type is given`
             },
             lowercase : true,
@@ -24,6 +24,7 @@ const contentSchema = new mongoose.Schema({
             type : String,
             required : true,
             minLength : 2,
+            maxLength : 80,
             trim : true
         },
 
@@ -32,7 +33,12 @@ const contentSchema = new mongoose.Schema({
             lowercase : true,
             trim : true,
             default : []
-        }
+        },
+        userId : {
+                type : mongoose.Schema.Types.ObjectId,
+                required : true,
+                ref : "User"
+            }
 
      },{timestamps : true})
 
