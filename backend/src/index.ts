@@ -1,34 +1,31 @@
-import express from 'express';
+import  express from 'express';
 import mongoose from 'mongoose';
+import  'dotenv/config';
 import userRouter from "./routes/userRoutes";
 
 const app = express();
-const port = 3000;
+const PORT = 3000;
 
-async function connectDb(){
-     try{
-        await mongoose.connect("mongodb+srv://shivanshofficial8750:8750776958@cluster0.samyw.mongodb.net/SecondBrain-Application");
-
-        console.log(`connected to db successfully`);
-
-        app.listen(port,()=>{
-            console.log(`app started listening on the port ${port}`);
-        })
-
-     }catch(error){
-         console.log(`failed to connect to db: `,error);
-     }
+const connectDb = async()=>{
+    try{
+        if(process.env.MONGO_DB_CONN){
+             await mongoose.connect(process.env.MONGO_DB_CONN);
+             console.log("connected to database successfully");
+             app.listen(PORT,()=>{
+                  console.log(`app started listening on the port ${PORT}`);
+             })
+        }else {
+            throw new Error("cannot find database connection string");
+        }
+    }catch(err){
+         console.log(`failed to connect to database : `,err);
+    }
 }
 
 connectDb();
 
-app.use(express.json());
-app.use("/user",userRouter);
 
-app.get("/",(req,res)=>{
-     return res.send({
-        msg : "hello world",
-        success : true
-     })
-})
+app.use(express.json());
+app.use("/api/v1",userRouter);
+
 
