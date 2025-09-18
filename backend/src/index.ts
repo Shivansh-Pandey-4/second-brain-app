@@ -2,6 +2,7 @@ import  express from 'express';
 import mongoose from 'mongoose';
 import  'dotenv/config';
 import userRouter from "./routes/userRoutes";
+import shareRouter from "./routes/shareRoutes";
 import contentRouter from "./routes/contentRoutes";
 
 const app = express();
@@ -29,5 +30,6 @@ connectDb();
 app.use(express.json());
 app.use("/api/v1",userRouter);
 app.use("/api/v1/",contentRouter);
+app.use("/api/v1/",shareRouter);
 
 

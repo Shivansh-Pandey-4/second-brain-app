@@ -110,7 +110,4 @@ router.delete("/content/:contentId", authentication, async (req: Request<{ conte
 
 
 
-
-
-
 export default router;

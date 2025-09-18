@@ -34,6 +34,13 @@ const contentSchema = new mongoose.Schema({
             trim : true,
             default : []
         },
+
+        description : {
+           type : String,
+           trim : true,
+           minLength : 10,
+        },
+        
         userId : {
                 type : mongoose.Schema.Types.ObjectId,
                 required : true,
