@@ -1,11 +1,18 @@
-import './App.css'
-import SideBar from './components/SideBar'
+import SideBar from './components/SideBar';
+import Body from './components/Body';
 
 function App() {
 
   return (
     <>
-      <SideBar/>
+      <div className='grid grid-cols-10 '>
+        <div className='col-span-2'>
+          <SideBar/>
+        </div>
+        <div className='col-span-8'>
+          <Body/>
+        </div>
+      </div>
     </>
   )
 }
