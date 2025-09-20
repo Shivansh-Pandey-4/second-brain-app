@@ -40,7 +40,8 @@ const Body = ()=>{
                   setError(true);
                   toast.error(data.detailError || "invalid jwt token");
                   toast.error(data.msg || "invalid jwt token");
-                  return 
+                  navigate("/signin");
+                  return;
               }
 
               setContentData(data.contents);

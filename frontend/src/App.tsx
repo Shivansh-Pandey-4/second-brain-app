@@ -1,7 +1,7 @@
 import SideBar from './components/SideBar';
 import Body from './components/Body';
 import Signup from './components/Signup';
-import { createBrowserRouter, Outlet } from 'react-router-dom';
+import { createBrowserRouter } from 'react-router-dom';
 import Signin from './components/Signin';
 
 function App() {
