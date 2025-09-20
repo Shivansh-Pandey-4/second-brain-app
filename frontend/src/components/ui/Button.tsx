@@ -5,7 +5,7 @@ type ButtonProps = {
 
      children : React.ReactNode;
      className ?: string;
-     variant ?: "colorFull" | "colorLess";
+     variant ?: "colorFull" | "colorLess" | "logout";
      startIcon ?: ReactElement;
 
 } & React.ComponentProps<"button">;
@@ -17,7 +17,8 @@ const Button = ({children, className, variant="colorLess", ...props}: ButtonProp
 
     const variants = {
          colorLess : "bg-gray-100 text-indigo-700 hover:bg-gray-300",
-         colorFull : "bg-indigo-500 text-white hover:bg-indigo-600"
+         colorFull : "bg-indigo-500 text-white hover:bg-indigo-600",
+         logout : "bg-red-500 text-black hover:bg-red-600"
     }
 
     return (

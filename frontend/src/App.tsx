@@ -1,5 +1,8 @@
 import SideBar from './components/SideBar';
 import Body from './components/Body';
+import Signup from './components/Signup';
+import { createBrowserRouter, Outlet } from 'react-router-dom';
+import Signin from './components/Signin';
 
 function App() {
 
@@ -17,4 +20,19 @@ function App() {
   )
 }
 
-export default App
+const appRouter = createBrowserRouter([
+     {
+       path : "/",
+       element : <App/>
+     },
+     {
+       path : "/signup",
+       element : <Signup/>
+     },
+     {
+       path : "/signin",
+       element : <Signin/>
+     }
+])
+
+export default appRouter;

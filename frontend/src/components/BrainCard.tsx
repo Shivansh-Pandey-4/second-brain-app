@@ -45,7 +45,7 @@ const BrainCard = (props : BrainCardProps)=>{
                 {
                      (type.toLowerCase() === "document" && <div>
                          <h1>This is the document type content</h1>
-                          <a className="underline" href={link}>document link</a>
+                          <a className="underline" href={link} target="_blank">document link</a>
                          </div>
                      )
                 }
@@ -57,9 +57,11 @@ const BrainCard = (props : BrainCardProps)=>{
                 }
              </div>
              <div className="flex flex-wrap gap-2 py-2"> 
-               {
-                tags? tags.map((tag,i)=><div key={i} className="bg-blue-400 rounded-md text-white px-2"><h1>{tag}</h1></div>): <div className="bg-blue-400 text-white px-1"><h1>#undefined</h1></div>
-               }   
+               {/* {
+                tags? tags.map((tag,i)=><div key={i} className="bg-blue-400 rounded-md text-white px-2"><h1>{tag}</h1></div>): <div className="bg-blue-400 text-white px-1"><h1>#undefined</h1></div> 
+               }    */
+                tags ? <div className="bg-blue-400 text-white px-1"><h1>{tags}</h1></div>: <div className="bg-blue-400 text-white px-1"><h1>#undefined</h1></div>
+               }
              </div>
              
              <h1 className="py-2">Added on - {createdAt.split("T")[0]}</h1>
