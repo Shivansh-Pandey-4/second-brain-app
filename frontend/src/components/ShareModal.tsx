@@ -1,6 +1,6 @@
 import Button from "./ui/Button";
 import { ShareModalProps } from "../lib/types";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { BACKEND_URL } from "../config";
@@ -39,7 +39,7 @@ const ShareModal = ({isOpen, onClose}: ShareModalProps)=>{
                   return;
               }
               if(data.hashString){
-                  setShareLink(`http://localhost:3000/api/v1/brain/${data?.hashString}`);
+                  setShareLink(`brain/${data?.hashString}`);
                 }else{
                      setShareLink("");
                 }
@@ -62,7 +62,7 @@ const ShareModal = ({isOpen, onClose}: ShareModalProps)=>{
 
                 <button onClick={onClose} className="place-self-end cursor-pointer py-1 mb-1 bg-black px-2 rounded-xl">{"❌"}</button>
 
-                <div className="flex flex-col items-center border rounded-lg p-3 h-40 bg-white" >
+                <div className="flex flex-col items-center border rounded-lg p-3 h-45 bg-white" >
 
                     <h1 className="text-2xl">Want to share your second brain content with others ?</h1>
 
@@ -77,7 +77,7 @@ const ShareModal = ({isOpen, onClose}: ShareModalProps)=>{
                         }
                     </div>
                     {
-                       shareLink&&<span><h1>{shareLink}</h1></span>
+                       shareLink&&<span className="w-xs mt-3 text-center border border-black cursor-pointer text-blue-700 px-3 py-1 rounded-lg bg-gray-200 hover:bg-gray-300 font-serif"><Link to={shareLink}>{shareLink}</Link></span>
                     }
                 </div>
              </div>

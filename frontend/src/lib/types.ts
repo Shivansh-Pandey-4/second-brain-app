@@ -3,7 +3,7 @@
      type : "tweet"|"document"|"youtube"|"brainthought";
      title : string;
      link ?: string;
-     tags ?: string[];
+     tags ?: string;
      userId : {
          firstName : string;
          _id : string;

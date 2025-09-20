@@ -1,8 +1,8 @@
 import { Data } from "../lib/types";
 import { SlSocialTwitter } from "react-icons/sl";
-import { RiFileVideoLine } from "react-icons/ri";
 import { IoDocumentTextOutline } from "react-icons/io5";
 import { GiPerspectiveDiceSixFacesRandom } from "react-icons/gi";
+import { FaYoutube } from "react-icons/fa";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { LuBrain } from "react-icons/lu";
 import { ReactElement } from "react";
@@ -15,8 +15,8 @@ const BrainCard = (props : BrainCardProps)=>{
    
     const {createdAt,title,type,link,tags} = props.value;
      const typeIcons: Record<string, ReactElement> = {
-        tweet: <SlSocialTwitter />,
-        video: <RiFileVideoLine />,
+        tweet: <SlSocialTwitter color="blue" />,
+        youtube: <FaYoutube size={20} color="red" />,
         document: <IoDocumentTextOutline size={20} />,
         random:  <GiPerspectiveDiceSixFacesRandom size={20}/>, 
         brainthought: <LuBrain/>,
@@ -27,7 +27,7 @@ const BrainCard = (props : BrainCardProps)=>{
     return (
         <div className="w-[310px] border border-gray-200 rounded-lg p-2 shadow-lg m-5 px-5 min-h-[300px] ">
             <div className="text-lg  font-serif pb-2 capitalize flex justify-between items-start">
-                <div className="flex gap-4 mr-3">
+                <div className="flex gap-4 mr-4">
                     <span>{icon}</span>
                     <span className="underline">{title} hello world nice to meet you d</span>
                 </div>
@@ -43,9 +43,9 @@ const BrainCard = (props : BrainCardProps)=>{
                      (type.toLowerCase() === "tweet" && <div> <blockquote className="twitter-tweet"><a href={link?.replace("/x.com","/twitter.com")}></a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charSet="utf-8"></script></div> )
                 }
                 {
-                     (type.toLowerCase() === "document" && <div>
-                         <h1>This is the document type content</h1>
-                          <a className="underline" href={link} target="_blank">document link</a>
+                     (type.toLowerCase() === "document" && <div className="my-5 flex flex-col items-center border border-gray-200 p-3 rounded-lg bg-slate-100 ">
+                         <h1 className="text-center">This is the document type content</h1>
+                          <a className="underline text-blue-600 my-5" href={link} target="_blank">document link</a>
                          </div>
                      )
                 }

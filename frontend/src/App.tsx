@@ -3,6 +3,7 @@ import Body from './components/Body';
 import Signup from './components/Signup';
 import { createBrowserRouter } from 'react-router-dom';
 import Signin from './components/Signin';
+import PublicContent from './components/PublicContent';
 
 function App() {
 
@@ -32,6 +33,10 @@ const appRouter = createBrowserRouter([
      {
        path : "/signin",
        element : <Signin/>
+     },
+     {
+       path : "/brain/:hashString",
+       element : <PublicContent/>
      }
 ])
 
