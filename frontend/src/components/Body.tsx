@@ -4,16 +4,17 @@ import BrainCard from "./BrainCard";
 import Button from "./ui/Button";
 import { IoMdAdd } from "react-icons/io";
 import { toast } from "react-toastify";
-import {data} from "../lib/types";
 import AddContentModel from "./AddContentModel";
 import ShareModal from "./ShareModal";
+import { Data } from "../lib/types";
 
 
 const Body = ()=>{
 
-    const [contentData, setContentData] = useState<data[]>([]);
+    const [contentData, setContentData] = useState<Data[]>([]);
     const [isloading,setIsloading] = useState(true);
     const [error, setError] = useState(false);
+    const [isShare, setIsShare] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
 
     async function fetchData(){
@@ -59,16 +60,19 @@ const Body = ()=>{
 
     return (
          <div className="mt-8">
-            <ShareModal isOpen={isOpen} onClose={()=>setIsOpen(false)} />
+
+            <ShareModal isOpen={isShare} onClose={()=>setIsShare(false)} />
+            <AddContentModel isOpen={isOpen} onClose={()=>setIsOpen(false)} />
+
             <section className="flex justify-between mx-15">
                 <h1 className="text-2xl font-bold">Notes</h1>
             <div>
                 <Button onClick={()=>{
-                    setIsOpen(true);
+                    setIsShare(true);
                 }} startIcon={<IoShareSocialOutline/>} variant="colorLess">
                         Share Brain
                 </Button>
-                <Button startIcon={<IoMdAdd/>} variant="colorFull">
+                <Button onClick={()=>setIsOpen(true)} startIcon={<IoMdAdd/>} variant="colorFull">
                         Add Content
                 </Button>
             </div>

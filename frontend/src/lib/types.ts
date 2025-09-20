@@ -1,4 +1,4 @@
- export interface data {
+ export interface Data {
     _id : string;
      type : "tweet"|"document"|"youtube"|"brainthought";
      title : string;

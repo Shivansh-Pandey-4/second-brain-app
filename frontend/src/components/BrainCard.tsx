@@ -1,4 +1,4 @@
-import { data } from "../lib/types";
+import { Data } from "../lib/types";
 import { SlSocialTwitter } from "react-icons/sl";
 import { RiFileVideoLine } from "react-icons/ri";
 import { IoDocumentTextOutline } from "react-icons/io5";
@@ -8,12 +8,12 @@ import { LuBrain } from "react-icons/lu";
 import { ReactElement } from "react";
 
 type BrainCardProps = {
-     value : data;
+     value : Data;
 }
 
 const BrainCard = (props : BrainCardProps)=>{
    
-    const {createdAt,title,type,userId,link,tags} = props.value;
+    const {createdAt,title,type,link,tags} = props.value;
      const typeIcons: Record<string, ReactElement> = {
         tweet: <SlSocialTwitter />,
         video: <RiFileVideoLine />,
