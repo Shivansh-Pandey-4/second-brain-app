@@ -39,7 +39,7 @@ const ShareModal = ({isOpen, onClose}: ShareModalProps)=>{
                   return;
               }
               if(data.hashString){
-                  setShareLink(`brain/${data?.hashString}`);
+                  setShareLink(`http://localhost:5173/brain/${data?.hashString}`);
                 }else{
                      setShareLink("");
                 }
@@ -77,7 +77,7 @@ const ShareModal = ({isOpen, onClose}: ShareModalProps)=>{
                         }
                     </div>
                     {
-                       shareLink&&<span className="w-xs mt-3 text-center border border-black cursor-pointer text-blue-700 px-3 py-1 rounded-lg bg-gray-200 hover:bg-gray-300 font-serif"><Link to={shareLink}>{shareLink}</Link></span>
+                       shareLink&&<span className=" mt-3 text-center border border-black cursor-pointer text-blue-700 px-3 py-1 rounded-lg bg-gray-200 hover:bg-gray-300 font-serif"><Link to={shareLink}>{shareLink}</Link></span>
                     }
                 </div>
              </div>
