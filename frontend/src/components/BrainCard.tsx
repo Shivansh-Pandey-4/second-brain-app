@@ -6,14 +6,53 @@ import { FaYoutube } from "react-icons/fa";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { LuBrain } from "react-icons/lu";
 import { ReactElement } from "react";
+import Button from "./ui/Button";
+import { BACKEND_URL } from "../config";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 type BrainCardProps = {
      value : Data;
+     onDelete : ()=>void;
 }
 
 const BrainCard = (props : BrainCardProps)=>{
    
-    const {createdAt,title,type,link,tags} = props.value;
+    const {createdAt,title,type,link,tags,_id} = props.value;
+    const navigate = useNavigate();
+
+    async function deleteCard(_id: string){
+          const token = localStorage.getItem("token");
+          if(!token){
+             navigate("/signin");
+             return;
+          }
+
+          try{
+              const response = await fetch(`${BACKEND_URL}/api/v1/content/${_id}`,{
+                  method : "DELETE",
+              headers : {
+                 "Content-Type" : "application/json",
+                  "token" : token
+              }
+          })
+          
+          const data = await response.json();
+          if(!response.ok){
+              toast.error(data.msg);
+              toast.error(data.detailError);
+              return;
+            }
+            
+            toast.success(data.msg);
+            props.onDelete();
+
+        }catch(err){
+             toast.error('unable to make /delete request');
+             return;
+        }
+    }
+
      const typeIcons: Record<string, ReactElement> = {
         tweet: <SlSocialTwitter color="blue" />,
         youtube: <FaYoutube size={20} color="red" />,
@@ -32,7 +71,9 @@ const BrainCard = (props : BrainCardProps)=>{
                     <span className="underline">{title} hello world nice to meet you d</span>
                 </div>
                 <div>
-                    <RiDeleteBinLine/>
+                    <Button onClick={()=>{deleteCard(_id)}} className="mx-0">
+                     <RiDeleteBinLine/>
+                    </Button>
                 </div>
             </div>
              <div className="text-lg font-serif">

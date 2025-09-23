@@ -13,7 +13,7 @@ type ButtonProps = {
 
 const Button = ({children, className, variant="colorLess", ...props}: ButtonProps)=>{
 
-    const baseStyle = "px-2 py-1 m-2 border border-black rounded-md cursor-pointer inline-flex items-center gap-1";
+    const baseStyle = "px-2 py-1 mx-2 border border-black rounded-md cursor-pointer inline-flex items-center gap-1";
 
     const variants = {
          colorLess : "bg-gray-100 text-indigo-700 hover:bg-gray-300",

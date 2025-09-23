@@ -30,8 +30,10 @@ const PublicContent = ()=>{
             return;
 
          }catch(err){
-
-         }
+             setError(true);
+             toast.error(`unable to fetch /GET/brain request.`);
+             return;
+         } 
     }
 
     useEffect(()=>{

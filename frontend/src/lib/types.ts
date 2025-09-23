@@ -15,4 +15,5 @@
 export interface ShareModalProps {
      isOpen : boolean;
      onClose : ()=>void;
+     refetch ?: ()=>void;
 }

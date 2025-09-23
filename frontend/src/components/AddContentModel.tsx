@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { BACKEND_URL } from "../config";
 import { useNavigate } from "react-router-dom";
 
-const AddContentModel = ({isOpen, onClose}: ShareModalProps )=>{
+const AddContentModel = ({isOpen, onClose, refetch}: ShareModalProps )=>{
 
    const [formData, setFormData] = useState({title: "",type: "",link: "",tags:""});
 
@@ -42,9 +42,14 @@ const AddContentModel = ({isOpen, onClose}: ShareModalProps )=>{
              }
 
              toast.success(data.msg);
+             if(refetch){
+               refetch();
+             }
              onClose();
            }catch(err){
-              
+               console.error("Error in fetchData:", err);
+               toast.error("Something went wrong while sharing the brain.");
+               return;
            }
       }
 
