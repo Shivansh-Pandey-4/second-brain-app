@@ -43,10 +43,10 @@ router.post("/brain/share", authentication, async(req,res)=>{
          const hashStringExist = await ShareModel.findOne({userId : req.user_info?.user_id});
          
          if(hashStringExist){
-            return res.status(400).send({
-               msg : "failed to generate share link",
-               success : false,
-               detailError : "share link already exist for this user"
+            return res.status(200).send({
+               msg : "user have already one",
+               success : true,
+               hashString : hashStringExist.hash
             })
          }
          
@@ -71,7 +71,7 @@ router.post("/brain/share", authentication, async(req,res)=>{
       }
 });
 
-router.get("/brain/share/:shareString", async(req,res)=>{
+router.get("/brain/:shareString", async(req,res)=>{
     const {shareString} = req.params;
 
    const prefix = (process.env.MY_PLATEFORM_PREFIX || "").trim();

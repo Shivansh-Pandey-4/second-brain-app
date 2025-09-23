@@ -3,7 +3,6 @@ import UserModel from "../models/userModel";
 import { userSignupSchema, RequestSignupBody, RequestSigninBody, userSigninSchema } from "../zod-validation/userSchemas";
 import  jsonwebtoken from "jsonwebtoken";
 import  bcrypt from 'bcrypt'
-import { success } from "zod";
 
 const router = Router();
 
@@ -18,7 +17,7 @@ router.post("/signup", async(req: Request<{},{},RequestSignupBody,{}>, res)=>{
       }
       try{
 
-         const {firstName,lastName,email,password} = req.body;
+         const {name,email,password} = req.body;
          const userExist = await UserModel.findOne({email});
          if(userExist){
             return res.status(400).send({
@@ -28,7 +27,7 @@ router.post("/signup", async(req: Request<{},{},RequestSignupBody,{}>, res)=>{
          } 
 
          const hashedPassword = await bcrypt.hash(password,10);
-         const newUser = await UserModel.create({firstName,lastName,password: hashedPassword,email});
+         const newUser = await UserModel.create({name,password: hashedPassword,email});
 
          return res.send({
             msg : "user signup successfull",
@@ -76,7 +75,7 @@ router.post("/signup", async(req: Request<{},{},RequestSignupBody,{}>, res)=>{
                  throw new Error("JWT_SECRET_KEY is not defined in environment variables");
             }
 
-            const token = jsonwebtoken.sign({id : userExist._id,firstName : userExist.firstName},process.env.JWT_SECRET_KEY,{expiresIn : '1hr'});
+            const token = jsonwebtoken.sign({id : userExist._id,firstName : userExist.name},process.env.JWT_SECRET_KEY,{expiresIn : '1hr'});
 
             return res.send({
                  msg : "user signedIn successfully",

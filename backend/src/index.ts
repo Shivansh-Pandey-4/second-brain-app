@@ -1,6 +1,7 @@
-import  express from 'express';
+import  express, { NextFunction } from 'express';
 import mongoose from 'mongoose';
 import  'dotenv/config';
+import cors from "cors";
 import userRouter from "./routes/userRoutes";
 import shareRouter from "./routes/shareRoutes";
 import contentRouter from "./routes/contentRoutes";
@@ -26,10 +27,9 @@ const connectDb = async()=>{
 
 connectDb();
 
-
+app.use(cors());
 app.use(express.json());
 app.use("/api/v1",userRouter);
 app.use("/api/v1/",contentRouter);
 app.use("/api/v1/",shareRouter);
-
 

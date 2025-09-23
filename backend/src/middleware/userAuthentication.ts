@@ -19,7 +19,7 @@ function authentication(req: Request, res: Response, next: NextFunction){
                 const decode = jwt.verify(token as string, process.env.JWT_SECRET_KEY) as MyJwtPayload;
 
                      req.user_info = {
-                         user_name : decode.firstName,
+                         user_name : decode.name,
                          user_id : decode.id
                      }
                      next();
