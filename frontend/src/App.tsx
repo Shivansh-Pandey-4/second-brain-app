@@ -4,6 +4,7 @@ import Signup from './components/Signup';
 import { createBrowserRouter } from 'react-router-dom';
 import Signin from './components/Signin';
 import PublicContent from './components/PublicContent';
+import ErrorPage from './components/ErrorPage';
 
 function App() {
 
@@ -23,6 +24,9 @@ function App() {
 
 const appRouter = createBrowserRouter([
      {
+       errorElement : <ErrorPage/>
+     },
+     {
        path : "/",
        element : <App/>
      },
@@ -37,7 +41,7 @@ const appRouter = createBrowserRouter([
      {
        path : "/brain/:hashString",
        element : <PublicContent/>
-     }
+     },
 ])
 
 export default appRouter;
