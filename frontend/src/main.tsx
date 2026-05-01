@@ -6,8 +6,8 @@ import { RouterProvider } from 'react-router-dom'
 import appRouter from './App.tsx'
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-     <RouterProvider router={appRouter} />
-    <ToastContainer/>
-  </StrictMode>,
+  <>
+    <RouterProvider router={appRouter} />
+    <ToastContainer />
+  </>
 )

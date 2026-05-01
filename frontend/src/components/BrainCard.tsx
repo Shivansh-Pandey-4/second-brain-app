@@ -12,53 +12,53 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 type BrainCardProps = {
-     value : Data;
-     onDelete : ()=>void;
+    value: Data;
+    onDelete: () => void;
 }
 
-const BrainCard = (props : BrainCardProps)=>{
-   
-    const {createdAt,title,type,link,tags,_id} = props.value;
+const BrainCard = (props: BrainCardProps) => {
+
+    const { createdAt, title, type, link, tags, _id } = props.value;
     const navigate = useNavigate();
 
-    async function deleteCard(_id: string){
-          const token = localStorage.getItem("token");
-          if(!token){
-             navigate("/signin");
-             return;
-          }
+    async function deleteCard(_id: string) {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            navigate("/signin");
+            return;
+        }
 
-          try{
-              const response = await fetch(`${BACKEND_URL}/api/v1/content/${_id}`,{
-                  method : "DELETE",
-              headers : {
-                 "Content-Type" : "application/json",
-                  "token" : token
-              }
-          })
-          
-          const data = await response.json();
-          if(!response.ok){
-              toast.error(data.msg);
-              toast.error(data.detailError);
-              return;
+        try {
+            const response = await fetch(`${BACKEND_URL}/api/v1/content/${_id}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    "token": token
+                }
+            })
+
+            const data = await response.json();
+            if (!response.ok) {
+                toast.error(data.msg);
+                toast.error(data.detailError);
+                return;
             }
-            
+
             toast.success(data.msg);
             props.onDelete();
 
-        }catch(err){
-             toast.error('unable to make /delete request');
-             return;
+        } catch (err) {
+            toast.error('unable to make /delete request');
+            return;
         }
     }
 
-     const typeIcons: Record<string, ReactElement> = {
+    const typeIcons: Record<string, ReactElement> = {
         tweet: <SlSocialTwitter color="blue" />,
         youtube: <FaYoutube size={20} color="red" />,
         document: <IoDocumentTextOutline size={20} />,
-        random:  <GiPerspectiveDiceSixFacesRandom size={20}/>, 
-        brainthought: <LuBrain/>,
+        random: <GiPerspectiveDiceSixFacesRandom size={20} />,
+        brainthought: <LuBrain />,
     };
 
     const icon = typeIcons[type] || "📌";
@@ -71,41 +71,41 @@ const BrainCard = (props : BrainCardProps)=>{
                     <span className="underline">{title} hello world nice to meet you d</span>
                 </div>
                 <div>
-                    <Button onClick={()=>{deleteCard(_id)}} className="mx-0">
-                     <RiDeleteBinLine/>
+                    <Button onClick={() => { deleteCard(_id) }} className="mx-0">
+                        <RiDeleteBinLine />
                     </Button>
                 </div>
             </div>
-             <div className="text-lg font-serif">
+            <div className="text-lg font-serif">
                 {
-                    (type.toLowerCase() === "youtube" && <div><iframe className="w-full h-80 py-5" src={link?.replace("/watch?v=","/embed/")} title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" ></iframe></div>)
+                    (type.toLowerCase() === "youtube" && <div><iframe className="w-full h-80 py-5" src={link?.replace("/watch?v=", "/embed/")} title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" ></iframe></div>)
                 }
                 {
-                     (type.toLowerCase() === "tweet" && <div> <blockquote className="twitter-tweet"><a href={link?.replace("/x.com","/twitter.com")}></a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charSet="utf-8"></script></div> )
+                    (type.toLowerCase() === "tweet" && <div> <blockquote className="twitter-tweet"><a href={link?.replace("/x.com", "/twitter.com")}></a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charSet="utf-8"></script></div>)
                 }
                 {
-                     (type.toLowerCase() === "document" && <div className="my-5 flex flex-col items-center border border-gray-200 p-3 rounded-lg bg-slate-100 ">
-                         <h1 className="text-center">This is the document type content</h1>
-                          <a className="underline text-blue-600 my-5" href={link} target="_blank">document link</a>
-                         </div>
-                     )
+                    (type.toLowerCase() === "document" && <div className="my-5 flex flex-col items-center border border-gray-200 p-3 rounded-lg bg-slate-100 ">
+                        <h1 className="text-center">This is the document type content</h1>
+                        <a className="underline text-blue-600 my-5" href={link} target="_blank">document link</a>
+                    </div>
+                    )
                 }
                 {
-                    (type.toLowerCase() === "brainthought" && <div>
-                         <h1>This is brainthought type content</h1>
-                         <a href={link}>document link</a>
-                         </div>)
+                    (type.toLowerCase() === "brainthought" && <div className="flex flex-col grow">
+                        <h1>This is brainthought type content</h1>
+                        <a className="underline text-blue-600 my-5" href={link} target="_blank">document link</a>
+                    </div>)
                 }
-             </div>
-             <div className="flex flex-wrap gap-2 py-2"> 
-               {/* {
+            </div>
+            <div className="flex flex-wrap gap-2 py-2">
+                {/* {
                 tags? tags.map((tag,i)=><div key={i} className="bg-blue-400 rounded-md text-white px-2"><h1>{tag}</h1></div>): <div className="bg-blue-400 text-white px-1"><h1>#undefined</h1></div> 
                }    */
-                tags ? <div className="bg-blue-400 text-white px-1"><h1>{tags}</h1></div>: <div className="bg-blue-400 text-white px-1"><h1>#undefined</h1></div>
-               }
-             </div>
-             
-             <h1 className="py-2">Added on - {createdAt.split("T")[0]}</h1>
+                    tags ? <div className="bg-blue-400 text-white px-1"><h1>{tags}</h1></div> : <div className="bg-blue-400 text-white px-1"><h1>#undefined</h1></div>
+                }
+            </div>
+
+            <h1 className="py-2">Added on - {createdAt.split("T")[0]}</h1>
         </div>
     )
 }
