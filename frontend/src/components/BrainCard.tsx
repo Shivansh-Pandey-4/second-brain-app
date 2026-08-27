@@ -66,12 +66,10 @@ const BrainCard = (props: BrainCardProps) => {
     return (
         <div className="w-[310px] border border-gray-200 rounded-lg p-2 shadow-lg m-5 px-5 min-h-[300px] ">
             <div className="text-lg  font-serif pb-2 capitalize flex justify-between items-start">
-                <div className="flex gap-4 mr-4">
-                    <span>{icon}</span>
-                    <span className="underline">{title} hello world nice to meet you d</span>
-                </div>
-                <div>
-                    <Button onClick={() => { deleteCard(_id) }} className="mx-0">
+                <div className="flex gap-4 items-center">
+                    <span className="px-2 py-1 bg-zinc-100 border rounded-md">{icon}</span>
+                    <span className="underline text-center text-xl">{title}</span>
+                    <Button variant="delete" onClick={() => { deleteCard(_id) }}>
                         <RiDeleteBinLine />
                     </Button>
                 </div>
@@ -92,8 +90,12 @@ const BrainCard = (props: BrainCardProps) => {
                 }
                 {
                     (type.toLowerCase() === "brainthought" && <div className="flex flex-col grow">
-                        <h1>This is brainthought type content</h1>
-                        <a className="underline text-blue-600 my-5" href={link} target="_blank">document link</a>
+                        <div className="mt-8 bg-zinc-100 p-3 rounded-md">
+                            <h1>This is <span className="font-bold">brainthought</span> type content</h1>
+                            <div className="mt-3 text-center">
+                                <a className="underline text-blue-600 text-xl" href={link} target="_blank">document link - Click Here</a>
+                            </div>
+                        </div>
                     </div>)
                 }
             </div>
@@ -101,7 +103,7 @@ const BrainCard = (props: BrainCardProps) => {
                 {/* {
                 tags? tags.map((tag,i)=><div key={i} className="bg-blue-400 rounded-md text-white px-2"><h1>{tag}</h1></div>): <div className="bg-blue-400 text-white px-1"><h1>#undefined</h1></div> 
                }    */
-                    tags ? <div className="bg-blue-400 text-white px-1"><h1>{tags}</h1></div> : <div className="bg-blue-400 text-white px-1"><h1>#undefined</h1></div>
+                    tags ? <div className="bg-blue-400 text-white px-1 mt-3"><h1>{tags}</h1></div> : <div className="bg-blue-400 text-white px-1"><h1>#undefined</h1></div>
                 }
             </div>
 

@@ -37,25 +37,33 @@ const Body = () => {
             <ShareModal isOpen={isShare} onClose={() => setIsShare(false)} />
             <AddContentModel refetch={fetchData} isOpen={isOpen} onClose={() => setIsOpen(false)} />
 
-            <section className="flex justify-between mx-15">
+            <section className="flex justify-between items-center mx-11">
                 <h1 className="text-2xl font-bold">Notes</h1>
                 <div>
                     <Button onClick={() => {
                         setIsShare(true);
                     }} startIcon={<IoShareSocialOutline />} variant="colorLess">
-                        Share Brain
+                        <span className="hidden md:block">
+                            Share Brain
+                        </span>
                     </Button>
                     <Button onClick={() => setIsOpen(true)} startIcon={<IoMdAdd />} variant="colorFull">
-                        Add Content
+                        <span className="hidden md:block">
+                            Add Content
+                        </span>
                     </Button>
                     <Button onClick={() => { localStorage.removeItem("token"); toast.success("user logout successfully"); navigate("/signin") }} startIcon={<FiLogOut />} variant="logout">
-                        Logout
+                        <span className="hidden md:block">
+                            Logout
+                        </span>
                     </Button>
                 </div>
             </section>
-            <div className="flex flex-wrap justify-center mt-5">
+            <div className="flex flex-wrap mt-5 justify-center">
                 {
-                    (data.length === 0) ? <div className="text-2xl mt-10 flex flex-col items-center"> <h1>Currently you have no contents.</h1> <h1 className="mt-3">Click Add Content Button.</h1> <h1 className="mt-3">To Add Content.</h1></div> : data.map((item, index) => <BrainCard value={item} key={index} onDelete={fetchData} />)
+                    (data.length === 0) ?
+                        <div className="text-2xl mt-10 flex flex-col items-center"> <h1>Currently you have no contents.</h1> <h1 className="mt-3">Click Add Content Button.</h1> <h1 className="mt-3">To Add Content.</h1></div>
+                        : data.map((item, index) => <BrainCard value={item} key={index} onDelete={fetchData} />)
                 }
             </div>
         </div>
