@@ -1,14 +1,14 @@
 import { Request,Response,NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import { MyJwtPayload } from "../types/jwt";
+import type { MyJwtPayload } from "../types/jwt.js";
 
 
 function authentication(req: Request, res: Response, next: NextFunction){
-            const {token} = req.headers;
+            const token = req.headers?.token;
             if(!token){
-                return res.status(400).send({
-                     msg : "token is missing",
-                     success : false
+                return res.status(400).json({
+                    success : false,
+                     msg : "token not provided"
                 })
             }
             try{
@@ -24,10 +24,10 @@ function authentication(req: Request, res: Response, next: NextFunction){
                      }
                      next();
             }catch(err){
-                return res.status(500).send({
-                     msg : "user authentication failed",
+                return res.status(500).json({
                      success : false,
-                     error : err
+                     msg : "user authentication failed",
+                     error : err instanceof Error ? err.message : "something went wrong"
                 })
             }
 }

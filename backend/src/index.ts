@@ -2,12 +2,12 @@ import  express, { NextFunction } from 'express';
 import mongoose from 'mongoose';
 import  'dotenv/config';
 import cors from "cors";
-import userRouter from "./routes/userRoutes";
-import shareRouter from "./routes/shareRoutes";
-import contentRouter from "./routes/contentRoutes";
+import userRouter from "./routes/userRoutes.js";
+import shareRouter from "./routes/shareRoutes.js";
+import contentRouter from "./routes/contentRoutes.js";
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 const connectDb = async()=>{
     try{
@@ -33,3 +33,10 @@ app.use("/api/v1",userRouter);
 app.use("/api/v1/",contentRouter);
 app.use("/api/v1/",shareRouter);
 
+
+app.get("/", (req, res)=>{
+    return res.json({
+        success : true,
+        msg : "hello world "
+    })
+})

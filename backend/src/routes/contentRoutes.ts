@@ -1,7 +1,7 @@
 import { Request, Response, Router } from "express";
-import { createContentSchema, RequestBodyContent } from "../zod-validation/contentSchema";
-import ContentModel from "../models/contentModel";
-import authentication from "../middleware/userAuthentication";
+import { createContentSchema, RequestBodyContent } from "../zod-validation/contentSchema.js";
+import ContentModel from "../models/contentModel.js";
+import authentication from "../middleware/userAuthentication.js";
 import mongoose from "mongoose";
 
 const router = Router();
@@ -9,27 +9,29 @@ const router = Router();
 router.post("/content", authentication, async(req: Request<{},{},RequestBodyContent,{}>, res: Response)=>{
      const response = createContentSchema.safeParse(req.body);
      if(!response.success){
-         return res.status(400).send({
+         return res.status(400).json({
+           success : false,
              msg : "invalid credential type",
-             success : false,
              detailError : response.error.issues
          })
      }
 
      try{
-          const {title,type,link,tags} = req.body;
+          const {title, type, link, tags} = response.data;
+
           const addNewContent = await ContentModel.create({title,type,link,tags,userId: req.user_info?.user_id});
 
-          return res.send({
+          return res.json({
+            success : true,
              msg : "new content added successfully",
-             content : addNewContent,
-             success : true
+             content : addNewContent
           })
+
      }catch(err){
-        return res.status(500).send({
-             msg : "failed to add content",
+        return res.status(500).json({
              success : false,
-             detailError : err
+             msg : "failed to add content",
+             detailError : err instanceof Error ? err.message : "something went wrong"
         })
      }
 });
@@ -39,44 +41,44 @@ router.get("/content", authentication, async(req,res)=>{
           const allContent = await ContentModel.find({userId : req.user_info?.user_id}).populate({path : "userId", select: "firstName"});
 
           if(allContent.length !==0){
-                return res.send({
-                     msg : "user contents found successfully",
+                return res.json({
                      success : true,
+                     msg : "user contents found successfully",
                      contents : allContent
                 })
           } else {
-                return res.send({
-                     msg : "user second brain is empty currently",
+                return res.json({
                      success : true,
+                     msg : "user second brain is empty currently",
                      contents : allContent
                 })
           }
      }catch(err){
-               return res.status(500).send({
-                    msg : "failed to find the contents",
+               return res.status(500).json({
                     success : false,
+                    msg : "failed to find the contents",
                     detailError : err instanceof Error ? err.message : err
                })
           }
 });
 
 
-router.delete("/content/:contentId", authentication, async (req: Request<{ contentId: string }>, res: Response) => {
+router.delete("/content/:contentId", authentication, async (req: Request<{ contentId ?: string }>, res: Response) => {
 
     const { contentId } = req.params;
 
     if (!contentId) {
       return res.status(400).json({
-        msg: "Invalid DELETE request",
         success: false,
+        msg: "Invalid DELETE request",
         detailError: "Request param `contentId` is missing",
       });
     }
 
     if (!mongoose.isValidObjectId(contentId)) {
       return res.status(400).json({
-        msg: "Invalid contentId",
         success: false,
+        msg: "Invalid contentId",
         detailError: "Provided contentId is not a valid ObjectId",
       });
     }
@@ -86,15 +88,15 @@ router.delete("/content/:contentId", authentication, async (req: Request<{ conte
 
       if (!deletedContent) {
         return res.status(404).json({
-          msg: "Content not found",
           success: false,
+          msg: "Content not found",
           detailError: "No content with the provided contentId",
         });
       }
 
       return res.json({
-        msg: "Content deleted successfully",
         success: true,
+        msg: "Content deleted successfully",
         content: deletedContent,
       });
 

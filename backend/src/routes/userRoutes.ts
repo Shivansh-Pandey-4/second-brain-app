@@ -1,6 +1,7 @@
-import { Request, Router } from "express";
-import UserModel from "../models/userModel";
-import { userSignupSchema, RequestSignupBody, RequestSigninBody, userSigninSchema } from "../zod-validation/userSchemas";
+import type { Request } from "express"; 
+import { Router } from "express";
+import UserModel from "../models/userModel.js";
+import { userSignupSchema, RequestSignupBody, RequestSigninBody, userSigninSchema } from "../zod-validation/userSchemas.js";
 import  jsonwebtoken from "jsonwebtoken";
 import  bcrypt from 'bcrypt'
 
@@ -10,36 +11,37 @@ const router = Router();
 router.post("/signup", async(req: Request<{},{},RequestSignupBody,{}>, res)=>{
       const response = userSignupSchema.safeParse(req.body);
       if(!response.success){
-          return res.status(409).send({
+          return res.status(409).json({
+             success : false,
              msg : "invalid credentail format",
              detailError : response.error.issues
           })
       }
       try{
 
-         const {name,email,password} = req.body;
+         const {name,email,password} = response.data;
          const userExist = await UserModel.findOne({email});
          if(userExist){
-            return res.status(400).send({
-                 msg : "duplicate email, failed to signup",
-                 success : false
+            return res.status(400).json({
+                success : false,
+                 msg : "email already taken"
             })
          } 
 
          const hashedPassword = await bcrypt.hash(password,10);
          const newUser = await UserModel.create({name,password: hashedPassword,email});
 
-         return res.send({
-            msg : "user signup successfull",
+         return res.json({
             success : true,
+            msg : "user signup successfull",
             userDetail : newUser
          })
 
       }catch(err){
-          return res.status(500).send({
-             msg : "failed to signup",
+          return res.status(500).json({
              success : false,
-             detailError : err
+             msg : "failed to signup",
+             detailError : err instanceof Error ? err.message : "something went wrong"
           })
       }
 });
@@ -47,27 +49,27 @@ router.post("/signup", async(req: Request<{},{},RequestSignupBody,{}>, res)=>{
  router.post("/signin", async(req: Request<{},{},RequestSigninBody,{}>, res)=>{
         const response = userSigninSchema.safeParse(req.body);
         if(!response.success){
-            return res.status(400).send({
+            return res.status(400).json({
+                success : false,
                  msg : "invalid credential format",
-                 success : false,
                  detailError : response.error.issues
             })
         }
         try{
-            const {email,password} = req.body;
+            const {email,password} = response.data;
             const userExist = await UserModel.findOne({email});
             if(!userExist){
-                 return res.status(400).send({
-                     msg : "invalid email or password",
-                     success : false
+                 return res.status(400).json({
+                     success : false,
+                     msg : "invalid email or password"
                  })
             }
 
             const validatePassword = await bcrypt.compare(password, userExist.password);
             if(!validatePassword){
-                return res.status(400).send({
-                     msg : "invalid email or password",
-                     success : false
+                return res.status(400).json({
+                     success : false,
+                     msg : "invalid email or password"
                 })
             }
 
@@ -77,16 +79,16 @@ router.post("/signup", async(req: Request<{},{},RequestSignupBody,{}>, res)=>{
 
             const token = jsonwebtoken.sign({id : userExist._id,firstName : userExist.name},process.env.JWT_SECRET_KEY,{expiresIn : '1hr'});
 
-            return res.send({
+            return res.json({
+                success : true,
                  msg : "user signedIn successfully",
-                 token,
-                 success : true
+                 token
             })
         }catch(err){
-             return res.status(500).send({
-                 msg : "failed to signin",
+             return res.status(500).json({
                  success : false,
-                 detailError : err
+                 msg : "failed to signin",
+                 detailError : err instanceof Error ? err.message : "something went wrong"
              })
         }
  });
