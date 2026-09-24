@@ -1,12 +1,28 @@
 import { LuBrain } from "react-icons/lu";
 import { sidebarItems } from "../utils/SidebarItems";
 import { useState } from "react";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { ImInsertTemplate } from "react-icons/im";
 
 
 const SideBar = () => {
 
     const [isActive, setIsActive] = useState("Home");
+    const navigate = useNavigate();
 
+
+    function handleIsActive(e: React.MouseEvent<HTMLLIElement, MouseEvent>) {
+
+        if (e.currentTarget.id === "Logout") {
+            localStorage.removeItem("token");
+            toast.success("user logout successfully");
+            return navigate("/signin");
+        }
+        else {
+            setIsActive(e.currentTarget.id)
+        }
+    }
 
     return (
         <div>
@@ -26,7 +42,7 @@ const SideBar = () => {
                             const Icon = item.icon;
 
                             return (
-                                <li onClick={() => setIsActive(item.name)} key={item.id} className={`flex items-center lg:justify-between justify-center py-2 mb-6 px-2 rounded-sm hover:bg-gray-200 cursor-pointer border border-gray-100 ${isActive === item.name && "bg-gray-300 hover:bg-gray-300"} group hover:scale-110 transition-all`}>
+                                <li onClick={handleIsActive} key={item.id} className={`flex items-center lg:justify-between justify-center py-2 mb-6 px-2 rounded-sm hover:bg-gray-200 cursor-pointer border border-gray-100 ${isActive === item.name && "bg-gray-300 hover:bg-gray-300"} group hover:scale-105 transition-all`} id={item.name}>
 
                                     <h2 className="text-2xl"><Icon className="shrink-0" />
                                     </h2>
@@ -35,6 +51,7 @@ const SideBar = () => {
                                     <div className="group-hover:visible invisible absolute capitalize left-full ml-3 z-10 bg-gray-200 p-1.5 rounded-md lg:hidden transition-all">
                                         {item.name}
                                     </div>
+
                                 </li>)
                         })
                     }

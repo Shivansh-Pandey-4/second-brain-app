@@ -15,7 +15,6 @@ const contentSchema = new mongoose.Schema({
 
         link : {
             type : String,
-            lowercase : true,
             trim : true,
             default : undefined
         },

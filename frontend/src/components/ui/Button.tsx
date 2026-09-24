@@ -1,5 +1,6 @@
 import React, { type ReactElement } from "react";
 import clsx from "clsx";
+import { twMerge } from "tailwind-merge";
 
 type ButtonProps = {
 
@@ -15,7 +16,7 @@ const Button = ({ children, className, variant = "colorLess", ...props }: Button
 
     const { disabled } = props;
 
-    const baseStyle = "px-2 py-1 mx-2 border border-black rounded-md cursor-pointer inline-flex items-center gap-1";
+    const baseStyle = "px-2 py-1 mx-2 border border-black rounded-md";
 
     const variants = {
         colorLess: "bg-gray-100 text-indigo-700 hover:bg-gray-300",
@@ -25,7 +26,7 @@ const Button = ({ children, className, variant = "colorLess", ...props }: Button
     }
 
     return (
-        <button disabled={disabled} {...props} className={clsx(`${baseStyle}, ${variants[variant]}, ${className}, ${disabled ? "cursor-not-allowed pointer-events-none" : "cursor-pointer"}, ${props.startIcon && "space-x-2 flex items-center justify-between"}`)}>
+        <button disabled={props.disabled} {...props} className={twMerge(`${baseStyle}, ${className}, ${props.startIcon && "space-x-2 flex items-center justify-between"}, ${disabled ? "cursor-not-allowed pointer-events-none" : "cursor-pointer"}, ${variants[variant]}`)}>
             {props?.startIcon} {children}
         </button>
     )

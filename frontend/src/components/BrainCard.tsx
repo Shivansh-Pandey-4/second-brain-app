@@ -10,16 +10,28 @@ import Button from "./ui/Button";
 import { BACKEND_URL } from "../config";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import getYouTubeEmbedUrl from "../lib/getYoutubeEmbeding";
+
 
 type BrainCardProps = {
     value: Data;
-    onDelete: () => void;
+    onDelete?: () => void;
 }
 
 const BrainCard = (props: BrainCardProps) => {
 
     const { createdAt, title, type, link, tags, _id } = props.value;
     const navigate = useNavigate();
+
+    const contentType = type.toLowerCase();
+
+    const youtubeEmbedUrl =
+        contentType === "youtube"
+            ? getYouTubeEmbedUrl(link)
+            : null;
+
+    console.log(youtubeEmbedUrl);
+
 
     async function deleteCard(_id: string) {
         const token = localStorage.getItem("token");
@@ -45,7 +57,9 @@ const BrainCard = (props: BrainCardProps) => {
             }
 
             toast.success(data.msg);
-            props.onDelete();
+            if (props.onDelete) {
+                props.onDelete()
+            }
 
         } catch (err) {
             toast.error('unable to make /delete request');
@@ -65,21 +79,39 @@ const BrainCard = (props: BrainCardProps) => {
 
     return (
         <div className="w-[310px] border border-gray-200 rounded-lg p-2 shadow-lg m-5 px-5 min-h-[300px] ">
-            <div className="text-lg  font-serif pb-2 capitalize flex justify-between items-start">
-                <div className="flex gap-4 items-center">
+
+            <div className="text-lg  font-serif pb-2 capitalize flex justify-between items-start w-full">
+                <div className="flex gap-4 items-center justify-between w-full">
                     <span className="px-2 py-1 bg-zinc-100 border rounded-md">{icon}</span>
-                    <span className="underline text-center text-xl">{title}</span>
+                    <h1 className="underline text-center text-xl">{title}</h1>
                     <Button variant="delete" onClick={() => { deleteCard(_id) }}>
                         <RiDeleteBinLine />
                     </Button>
                 </div>
             </div>
+
             <div className="text-lg font-serif">
                 {
-                    (type.toLowerCase() === "youtube" && <div><iframe className="w-full h-80 py-5" src={link?.replace("/watch?v=", "/embed/")} title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" ></iframe></div>)
+                    type.toLowerCase() === "youtube" && youtubeEmbedUrl && (
+                        <div className="py-3">
+                            <iframe
+                                className="w-full h-100 rounded-md"
+                                src={youtubeEmbedUrl}
+                                title="YouTube video player"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                referrerPolicy="strict-origin-when-cross-origin"
+                                allowFullScreen
+                            />
+                        </div>
+                    )
                 }
                 {
-                    (type.toLowerCase() === "tweet" && <div> <blockquote className="twitter-tweet"><a href={link?.replace("/x.com", "/twitter.com")}></a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charSet="utf-8"></script></div>)
+                    (type.toLowerCase() === "tweet" && <div> <blockquote className="twitter-tweet">
+                        <a href={link?.replace("/x.com", "/twitter.com")}>
+                        </a>
+                    </blockquote>
+                        <script async src="https://platform.twitter.com/widgets.js" charSet="utf-8"></script>
+                    </div>)
                 }
                 {
                     (type.toLowerCase() === "document" && <div className="my-5 flex flex-col items-center border border-gray-200 p-3 rounded-lg bg-slate-100 ">

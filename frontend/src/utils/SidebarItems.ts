@@ -2,6 +2,7 @@ import { SlSocialTwitter } from "react-icons/sl";
 import { RiFileVideoLine } from "react-icons/ri";
 import { IoDocumentTextOutline } from "react-icons/io5";
 import { IoLinkSharp, IoHomeOutline } from "react-icons/io5";
+import { FiLogOut } from "react-icons/fi";
 
 
 
@@ -33,5 +34,11 @@ export const sidebarItems = [
         id: 5,
         name : "Youtube",
         icon: RiFileVideoLine
+    },
+    {
+        id : 6,
+        name : "Logout",
+        icon : FiLogOut
     }
 ]
+

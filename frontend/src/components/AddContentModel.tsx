@@ -91,7 +91,7 @@ const AddContentModel = ({ isOpen, onClose, refetch }: ShareModalProps) => {
 
                   <input required type="text" placeholder="Enter Title" className="border px-3 py-1 rounded-md mb-4" value={formData.title} onChange={(e) => setFormData({ ...formData, title: e.target.value })} />
 
-                  <input required type="url" placeholder="Enter link ex: youtube, twitter or any website link" className="border px-3 py-1 rounded-md mb-3" value={formData.link} onChange={(e) => setFormData({ ...formData, link: e.target.value })} />
+                  <input required type="text" placeholder="Enter link ex: youtube, twitter or any website link" className="border px-3 py-1 rounded-md mb-3" value={formData.link} onChange={(e) => setFormData({ ...formData, link: e.target.value })} />
 
                   <input type="text" placeholder="Enter Tags ex: #productivityHack #futurePlans etc" className="border px-3 py-1 rounded-md mb-3" value={formData.tags} onChange={(e) => setFormData({ ...formData, tags: e.target.value })} />
 
