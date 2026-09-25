@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { BACKEND_URL } from "../config";
+import { BACKEND_URL } from "../utils/config";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "./ui/Button";
 import { Loader2 } from "lucide-react";

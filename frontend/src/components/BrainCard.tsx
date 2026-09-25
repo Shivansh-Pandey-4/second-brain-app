@@ -7,7 +7,7 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import { LuBrain } from "react-icons/lu";
 import { ReactElement } from "react";
 import Button from "./ui/Button";
-import { BACKEND_URL } from "../config";
+import { BACKEND_URL } from "../utils/config";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import getYouTubeEmbedUrl from "../lib/getYoutubeEmbeding";
@@ -15,8 +15,10 @@ import getYouTubeEmbedUrl from "../lib/getYoutubeEmbeding";
 
 type BrainCardProps = {
     value: IContent;
-    onDelete?: () => void;
+    onDelete: () => void;
 }
+
+
 
 const BrainCard = (props: BrainCardProps) => {
 
@@ -49,15 +51,14 @@ const BrainCard = (props: BrainCardProps) => {
             })
 
             const data = await response.json();
+
             if (!response.ok) {
-                toast.error(data.detailError || data.msg);
+                toast.error(data.error || data.msg);
                 return;
             }
 
             toast.success(data.msg);
-            if (props.onDelete) {
-                props.onDelete()
-            }
+            props.onDelete()
 
         } catch (err) {
             toast.error('unable to make /delete request');

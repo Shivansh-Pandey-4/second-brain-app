@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { BACKEND_URL } from "../config";
+import { BACKEND_URL } from "../utils/config";
 import { useNavigate, Link } from "react-router-dom";
 import Button from "./ui/Button";
 import { Loader2 } from "lucide-react";
@@ -39,7 +39,7 @@ const Signin = () => {
             localStorage.setItem("token", data.token);
             toast.success(data.msg);
             setInputData({ email: "", password: "" });
-            navigate("/");
+            navigate("/dashboard");
             return;
 
         } catch (err) {

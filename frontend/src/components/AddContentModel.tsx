@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { ShareModalProps } from "../lib/types";
 import Button from "./ui/Button";
 import { toast } from "react-toastify";
-import { BACKEND_URL } from "../config";
+import { BACKEND_URL } from "../utils/config";
 import { useNavigate } from "react-router-dom";
 
 const AddContentModel = ({ isOpen, onClose, refetch }: ShareModalProps) => {

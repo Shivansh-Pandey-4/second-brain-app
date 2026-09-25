@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { type IData } from "../lib/types";
-import { BACKEND_URL } from "../config";
+import { BACKEND_URL } from "../utils/config";
 import { toast } from "react-toastify";
 import BrainCard from "./BrainCard";
 import Button from "./ui/Button";

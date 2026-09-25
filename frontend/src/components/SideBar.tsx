@@ -3,7 +3,7 @@ import { sidebarItems } from "../utils/SidebarItems";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { ImInsertTemplate } from "react-icons/im";
+
 
 
 const SideBar = () => {
@@ -17,12 +17,13 @@ const SideBar = () => {
         if (e.currentTarget.id === "Logout") {
             localStorage.removeItem("token");
             toast.success("user logout successfully");
-            return navigate("/signin");
+            return navigate("/", { replace: true });
         }
         else {
             setIsActive(e.currentTarget.id)
         }
     }
+
 
     return (
         <div>

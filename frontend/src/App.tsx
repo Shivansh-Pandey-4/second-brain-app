@@ -1,24 +1,19 @@
-import SideBar from './components/SideBar';
-import Body from './components/Body';
 import Signup from './components/Signup';
 import { createBrowserRouter } from 'react-router-dom';
 import Signin from './components/Signin';
 import PublicContent from './components/PublicContent';
 import ErrorPage from './components/ErrorPage';
+import ProtectedPage from './components/ProtectedPage';
+import UnProtectedPage from './components/UnProtectedPage';
+import Home from './components/Home';
+import Dashboard from './components/Dashboard';
 
 function App() {
 
   return (
-    <>
-      <div className='grid grid-cols-4 md:grid-cols-10 '>
-        <div className='col-span-1 md:col-span-2 border-r'>
-          <SideBar />
-        </div>
-        <div className='col-span-3 md:col-span-8'>
-          <Body />
-        </div>
-      </div>
-    </>
+    <div>
+      <Home />
+    </div>
   )
 }
 
@@ -31,12 +26,26 @@ const appRouter = createBrowserRouter([
     element: <App />
   },
   {
+    path: "/dashboard",
+    element: (<ProtectedPage>
+      <Dashboard />
+    </ProtectedPage>)
+  },
+  {
     path: "/signup",
-    element: <Signup />
+    element: (
+      <UnProtectedPage>
+        <Signup />
+      </UnProtectedPage>
+    )
   },
   {
     path: "/signin",
-    element: <Signin />
+    element: (
+      <UnProtectedPage>
+        <Signin />
+      </UnProtectedPage>
+    )
   },
   {
     path: "/brain/:hashString",

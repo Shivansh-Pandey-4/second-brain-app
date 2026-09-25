@@ -3,7 +3,7 @@ import { ShareModalProps } from "../lib/types";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
-import { BACKEND_URL } from "../config";
+import { BACKEND_URL } from "../utils/config";
 import { Copy, CopyCheck } from "lucide-react";
 
 const ShareModal = ({ isOpen, onClose }: ShareModalProps) => {

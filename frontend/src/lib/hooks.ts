@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { BACKEND_URL } from "../config"
+import { BACKEND_URL } from "../utils/config"
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { type IData } from "./types";
@@ -41,7 +41,7 @@ export function useFetch(link: string, page : number, limit: number){
                 setError(true);
                 if(data){
                     if(!data.success){
-                        toast.error(data.error || data.detailError || data.msg);
+                        toast.error(data.error || data.msg);
                         if(data.error?.includes("jwt")){
                             navigate("/signin");
                             return;
@@ -63,7 +63,7 @@ export function useFetch(link: string, page : number, limit: number){
               if(err instanceof TypeError){
                 return toast.error("network error");
               }
-              return toast.error(data?.detailError || data?.msg ||( err instanceof Error? err.message : "something went wrong"));
+              return toast.error( data?.error || data?.msg ||( err instanceof Error? err.message : "something went wrong"));
          }finally{
             setIsloading(false);
 
