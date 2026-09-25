@@ -7,13 +7,15 @@ import AddContentModel from "./AddContentModel";
 import ShareModal from "./ShareModal";
 import { useFetch } from "../lib/hooks";
 import Empty from "./Empty";
+import Pagination from "./Pagination";
 
 
 const Body = () => {
 
-    const { isloading, error, data, fetchData } = useFetch("/api/v1/content", "GET");
+    const [page, setPage] = useState(1);
     const [isShare, setIsShare] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
+    const { isloading, error, data, fetchData } = useFetch("api/v1/content", page, 3);
 
 
     if (error) {
@@ -26,6 +28,10 @@ const Body = () => {
         return <div className="flex justify-center items-center min-h-screen">
             <h1 className="text-4xl">Loading...</h1>
         </div>
+    }
+
+    if (!data || !data.contents) {
+        return <Empty />
     }
 
     return (
@@ -53,13 +59,19 @@ const Body = () => {
                     </Button>
                 </div>
             </section>
+
             <div className="flex flex-wrap mt-5 justify-center">
                 {
-                    (data.length === 0) ?
+                    (data.contents.length === 0) ?
                         <Empty />
-                        : data.map((item, index) => <BrainCard value={item} key={index} onDelete={fetchData} />)
+                        : data.contents.map((item, index) => <BrainCard value={item} key={index} onDelete={fetchData} />)
                 }
             </div>
+
+            {
+                data.contents.length !== 0 && <Pagination isloading={isloading} data={data} page={page} setPage={setPage} />
+            }
+
         </div>
     )
 }

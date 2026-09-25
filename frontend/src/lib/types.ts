@@ -1,15 +1,30 @@
- export interface Data {
-    _id : string;
-     type : "tweet"|"document"|"youtube"|"brainthought";
-     title : string;
-     link ?: string;
-     tags ?: string;
-     userId : {
-         firstName : string;
-         _id : string;
+export interface IContent{
+          _id : string;
+          type : "tweet"|"document"|"youtube"|"brainthought";
+          title : string;
+          link ?: string;
+          tags ?: string;
+          userId : {
+               firstName : string;
+               _id : string;
+          }
+          createdAt : string;
+          updatedAt : string;
      }
-     createdAt : string;
-     updatedAt : string;
+
+export interface IData {
+     success : boolean;
+     msg : string;
+     error ?: string;
+     detailError ?: string;
+     contents ?: IContent[];
+     pagination ?: {
+          currentPage : number;
+          limit : number;
+          totalDocument : number;
+          totalPage : number;
+     }
+
 }
 
 export interface ShareModalProps {

@@ -1,4 +1,4 @@
-import { Data } from "../lib/types";
+import { type IContent } from "../lib/types";
 import { SlSocialTwitter } from "react-icons/sl";
 import { IoDocumentTextOutline } from "react-icons/io5";
 import { GiPerspectiveDiceSixFacesRandom } from "react-icons/gi";
@@ -14,7 +14,7 @@ import getYouTubeEmbedUrl from "../lib/getYoutubeEmbeding";
 
 
 type BrainCardProps = {
-    value: Data;
+    value: IContent;
     onDelete?: () => void;
 }
 
@@ -30,7 +30,6 @@ const BrainCard = (props: BrainCardProps) => {
             ? getYouTubeEmbedUrl(link)
             : null;
 
-    console.log(youtubeEmbedUrl);
 
 
     async function deleteCard(_id: string) {
@@ -51,8 +50,7 @@ const BrainCard = (props: BrainCardProps) => {
 
             const data = await response.json();
             if (!response.ok) {
-                toast.error(data.msg);
-                toast.error(data.detailError);
+                toast.error(data.detailError || data.msg);
                 return;
             }
 

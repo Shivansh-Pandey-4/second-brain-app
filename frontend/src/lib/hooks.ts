@@ -2,10 +2,10 @@ import { useEffect, useState } from "react"
 import { BACKEND_URL } from "../config"
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { Data } from "./types";
+import { type IData } from "./types";
 
-export function useFetch(link: string, method: string){
-    const [data, setData] = useState<Data[]>([]);
+export function useFetch(link: string, page : number, limit: number){
+    const [data, setData] = useState<IData | null>(null);
     const [isloading,setIsloading] = useState(true);
     const [error, setError] = useState(false);
     const navigate = useNavigate();
@@ -13,41 +13,66 @@ export function useFetch(link: string, method: string){
 
     async function fetchData(){
 
-         const token = localStorage.getItem("token");
-         if(!token){
-             navigate("/signin");
-             return;
-         }
-          try{
-              const response = await fetch(`${BACKEND_URL}`+link,{
-                   method : method,
-                   headers : {
-                       "Content-Type" : "application/json",
-                       "token" : token || "token does not exist"
-                   }
-              })
+        if(!localStorage.getItem("token")){
+            navigate("/signin");
+            return;
+        }
 
-              const data = await response.json();
+        try {
 
-              if(!response.ok){
-                  setError(true);
-                  toast.error(data.detailError || "invalid jwt token");
-                  toast.error(data.msg || "invalid jwt token");
-                  navigate("/signin");
-                  return;
-              }
+            const response = await fetch(`${BACKEND_URL}/${link}?page=${page}&limit=${limit}`, 
+            {
+                method : "GET",
+                headers : {
+                    "content-type" : "application/json",
+                    token : localStorage.getItem("token") || ""
+                }
+            });
 
-              setData(data.contents || data.userContent || data.content);
-              setIsloading(false);
-          }catch(err){
+            let data: IData | null = null;
+
+            try {
+                data = await response.json();
+            } catch (error) {
+                data = null;
+            }
+
+            if(!response.ok){
+                setError(true);
+                if(data){
+                    if(!data.success){
+                        toast.error(data.error || data.detailError || data.msg);
+                        if(data.error?.includes("jwt")){
+                            navigate("/signin");
+                            return;
+                        }
+                        return;
+                    }
+                }
+                toast.error("failed to get content");
+                return;
+            }
+
+            if(data && data.success){
+                setData(data);
+                return;
+            }
+
+        }catch(err){
               setError(true);
-              return toast.error("error in the catch block");
+              if(err instanceof TypeError){
+                return toast.error("network error");
+              }
+              return toast.error(data?.detailError || data?.msg ||( err instanceof Error? err.message : "something went wrong"));
+         }finally{
+            setIsloading(false);
+
          }
     }
 
     useEffect(()=>{
         fetchData();
-    },[link]);
+    },[link, page]);
 
     return {isloading,error,data,fetchData};
 

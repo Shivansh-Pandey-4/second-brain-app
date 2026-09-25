@@ -8,7 +8,7 @@ function authentication(req: Request, res: Response, next: NextFunction){
             if(!token){
                 return res.status(400).json({
                     success : false,
-                     msg : "token not provided"
+                     msg : "jwt token not provided"
                 })
             }
             try{

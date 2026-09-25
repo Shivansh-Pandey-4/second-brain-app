@@ -36,21 +36,60 @@ router.post("/content", authentication, async(req: Request<{},{},RequestBodyCont
      }
 });
 
-router.get("/content", authentication, async(req,res)=>{
+router.get("/content", authentication, async(req: Request<{}, {}, {}, {page ?: string; limit ?: string;}>, res: Response)=>{
+
+    const requestedPage = parseInt(req.query.page || "1");
+    const requestedLimit = parseInt(req.query.limit || "5");
+
+    const page = (Number.isNaN(requestedPage) || requestedPage < 1 ) ? 1 : requestedPage;
+    const limit = (Number.isNaN(requestedLimit) || requestedLimit < 1) ? 5 : Math.min(requestedLimit, 3);
+
+    const skip = (page - 1) * limit;
+
+
      try{
-          const allContent = await ContentModel.find({userId : req.user_info?.user_id}).populate({path : "userId", select: "firstName"});
+          const allContent = await ContentModel
+          .find({userId : req.user_info?.user_id})
+          .sort({'createdAt' : -1})
+          .skip(skip)
+          .limit(limit)
+          .populate({path : "userId", select: "firstName"});
+
+          const totalDocument = await ContentModel.countDocuments({
+            userId : req.user_info?.user_id
+          });
+          const totalPage = Math.ceil(totalDocument / limit);
+
+          if(page > totalPage){
+            return res.status(404).json({
+              success : false,
+              msg : "page does not exit"
+            })
+          }
 
           if(allContent.length !==0){
                 return res.json({
                      success : true,
                      msg : "user contents found successfully",
-                     contents : allContent
+                     contents : allContent,
+                     pagination : {
+                        currentPage : page,
+                        totalPage : totalPage,
+                        limit : limit,
+                        totalDocument : totalDocument
+                     }
                 })
           } else {
                 return res.json({
                      success : true,
                      msg : "user second brain is empty currently",
-                     contents : allContent
+                     contents : allContent,
+                     pagination : {
+                        currentPage : page,
+                        totalPage : totalPage,
+                        limit : limit,
+                        totalDocument : totalDocument
+                     }
                 })
           }
      }catch(err){
