@@ -2,38 +2,43 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { BACKEND_URL } from "../config";
 import { Link, useNavigate } from "react-router-dom";
+import Button from "./ui/Button";
+import { Loader2 } from "lucide-react";
+import Input from "./ui/Input";
 
 
 const Signup = () => {
 
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [inputData, setInputData] = useState({
+        name: "",
+        email: "",
+        password: ""
+    })
+
+    const [isLoading, setIsLoading] = useState(false);
 
     const navigate = useNavigate();
 
     async function fetchData() {
         try {
-
+            setIsLoading(true);
             const response = await fetch(`${BACKEND_URL}/api/v1/signup`, {
                 method: "POST",
                 headers: {
                     "content-type": "application/json"
                 },
-                body: JSON.stringify({ email, password, name })
+                body: JSON.stringify(inputData)
             })
 
             const data = await response.json();
 
             if (!response.ok) {
-                toast.error(data.msg || "Something went wrong");
+                toast.error(data.error || data.msg || "Something went wrong");
                 return;
             }
 
             toast.success(data.msg);
-            setName("");
-            setEmail("");
-            setPassword("");
+            setInputData({ name: "", email: "", password: "" });
             navigate("/signin");
 
             return;
@@ -42,24 +47,26 @@ const Signup = () => {
             if (err instanceof TypeError) {
                 toast.error("Network error. Please check your internet connection.");
             } else {
-                toast.error("Unexpected error. Please try again.");
+                toast.error(err instanceof Error ? err.message : "Unexpected error. Please try again.");
             }
+        } finally {
+            setIsLoading(false);
         }
     }
 
     function handleForm(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
-        if (name.length < 3) {
+        if (inputData.name.trim().length < 3) {
             toast.error("name should be minimum 3 letters long");
             return;
         }
         const emailRegex = /^\S+@\S+\.\S+$/;
-        if (!emailRegex.test(email)) {
+        if (!emailRegex.test(inputData.email)) {
             toast.error("invalid email type");
             return;
         }
 
-        if (password.length < 6 || password.length >= 30) {
+        if (inputData.password.trim().length < 6 || inputData.password.trim().length >= 30) {
             toast.error("password must be 6 letters long and less than 30 letters");
             return;
         }
@@ -67,36 +74,56 @@ const Signup = () => {
         fetchData();
     }
 
-    return (
-        <div className="flex justify-center mt-10">
-            <div className=" border border-gray-300 w-sm h-110 flex flex-col items-center rounded-lg shadow-xl">
+    function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
+        setInputData(prev => (
+            { ...prev, [e.target.name]: e.target.value }
+        ))
+    }
 
-                <h1 className="text-2xl my-5">Sign Up</h1>
+    return (
+        <div className="flex flex-col  justify-center items-center h-screen">
+
+            <div className="max-w-3xl w-full mb-10">
+                <Link to={"/"}>
+                    <Button>Go Home</Button>
+                </Link>
+            </div>
+
+            <div className=" border border-gray-300 flex flex-col items-center rounded-lg shadow-xl max-w-sm w-2xs md:w-full">
+
+                <h1 className="text-2xl my-5">Signup Page</h1>
 
                 <form onSubmit={handleForm}>
 
-                    <div className="flex flex-col items-center">
-                        <input autoFocus required value={name} onChange={(e) => setName(e.target.value)} type="text" placeholder="Enter Name" className="border my-3 rounded-md px-2 py-1.5 w-60" />
+                    <div className="flex flex-col items-center w-full px-4 md:px-0">
 
-                        <input required value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="Enter Email" className="border my-3 rounded-md px-2 py-1.5 w-60" />
+                        <Input autoFocus required name="name" value={inputData.name} onChange={handleInputChange} type="text" placeholder="Enter Name" className="my-3" />
 
-                        <input required value={password} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Enter Password" className="border my-3 rounded-md px-2 py-1.5 w-60" />
+                        <Input required value={inputData.email} name="email" onChange={handleInputChange} type="email" placeholder="Enter Email" className="my-3" />
+
+                        <Input required value={inputData.password} name="password" onChange={handleInputChange} type="password" placeholder="Enter Password" className="my-3" />
+
+                        <Button variant="secondary" className="mt-3 flex items-center justify-center w-full">
+                            {
+                                isLoading ? <span><Loader2 className="animate-spin" /></span> : "Sign Up"
+                            }
+                        </Button>
 
                     </div>
-                    <button className="border w-full mt-3 border-black cursor-pointer px-3 py-1.5 rounded-md bg-sky-600 text-white hover:bg-sky-700 ">Sign Up</button>
+
+
+
+                    <span className="flex items-center mt-5 mb-3">
+                        <span className="flex-grow border-t border border-gray-400"></span>
+                        <span className="mx-1 text-lg">or</span>
+                        <span className="flex-grow border-t border border-gray-400"></span>
+                    </span>
+
+                    <div className="mt-1 mb-10 flex items-center justify-center">
+                        <span className="text-lg">Already have an account ? <button className="text-sky-600 cursor-pointer font-semibold hover:underline"><Link to={"/signin"}>Login</Link></button> </span>
+                    </div>
                 </form>
 
-                <span className="flex items-center w-xs mt-5 mb-3">
-                    <span className="flex-grow border-t border border-gray-400"></span>
-                    <span className="mx-1 text-lg">or</span>
-                    <span className="flex-grow border-t border border-gray-400"></span>
-                </span>
-
-                <div className="mt-1">
-
-                    <span className="text-lg">Already have an account ? <button className="text-sky-600 cursor-pointer font-semibold"><Link to={"/signin"}>Login</Link></button> </span>
-
-                </div>
             </div>
         </div>
     )
