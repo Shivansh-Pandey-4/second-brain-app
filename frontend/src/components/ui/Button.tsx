@@ -16,7 +16,7 @@ const Button = ({ children, className, variant = "colorLess", ...props }: Button
 
     const { disabled } = props;
 
-    const baseStyle = "px-2 py-1 mx-2 border border-black rounded-md";
+    const baseStyle = "px-2 py-1 border border-black rounded-md";
 
     const variants = {
         colorLess: "bg-gray-100 text-indigo-700 hover:bg-gray-300",

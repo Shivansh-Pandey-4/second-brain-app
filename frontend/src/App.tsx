@@ -5,7 +5,7 @@ import PublicContent from './components/PublicContent';
 import ErrorPage from './components/ErrorPage';
 import ProtectedPage from './components/ProtectedPage';
 import UnProtectedPage from './components/UnProtectedPage';
-import Home from './components/Home';
+import Home from './components/landing-page/Home';
 import Dashboard from './components/Dashboard';
 
 function App() {
