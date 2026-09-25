@@ -11,19 +11,16 @@ interface IProps {
 export default function Pagination({ data, page, setPage, isloading }: IProps) {
 
     const pagination = data.pagination;
-    console.log(pagination);
 
     if (!pagination) { return null; }
 
     function handlePrevBtn() {
-        console.log("handlePrev is called");
         if (page > 1) {
             setPage(page - 1);
         }
     }
 
     function handleNextBtn() {
-        console.log("handleNext is called");
 
         if (pagination) {
             if (page < pagination.totalPage) {
@@ -33,7 +30,6 @@ export default function Pagination({ data, page, setPage, isloading }: IProps) {
         }
     }
 
-    console.log("current page props : ", page);
 
     return (
         <div className="flex items-center justify-center gap-x-20 w-full flex-wrap my-10">

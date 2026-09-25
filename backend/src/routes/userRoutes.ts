@@ -14,7 +14,7 @@ router.post("/signup", async(req: Request<{},{},RequestSignupBody,{}>, res)=>{
           return res.status(409).json({
              success : false,
              msg : "invalid credentail format",
-             detailError : response.error.issues
+             error : response.error.issues
           })
       }
       try{
@@ -41,7 +41,7 @@ router.post("/signup", async(req: Request<{},{},RequestSignupBody,{}>, res)=>{
           return res.status(500).json({
              success : false,
              msg : "failed to signup",
-             detailError : err instanceof Error ? err.message : "something went wrong"
+             error : err instanceof Error ? err.message : "something went wrong"
           })
       }
 });
@@ -52,7 +52,7 @@ router.post("/signup", async(req: Request<{},{},RequestSignupBody,{}>, res)=>{
             return res.status(400).json({
                 success : false,
                  msg : "invalid credential format",
-                 detailError : response.error.issues
+                 error : response.error.issues
             })
         }
         try{
@@ -88,7 +88,7 @@ router.post("/signup", async(req: Request<{},{},RequestSignupBody,{}>, res)=>{
              return res.status(500).json({
                  success : false,
                  msg : "failed to signin",
-                 detailError : err instanceof Error ? err.message : "something went wrong"
+                 error : err instanceof Error ? err.message : "something went wrong"
              })
         }
  });

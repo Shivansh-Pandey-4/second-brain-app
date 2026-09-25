@@ -12,7 +12,7 @@ router.post("/content", authentication, async(req: Request<{},{},RequestBodyCont
          return res.status(400).json({
            success : false,
              msg : "invalid credential type",
-             detailError : response.error.issues
+             error : response.error.issues
          })
      }
 
@@ -31,7 +31,7 @@ router.post("/content", authentication, async(req: Request<{},{},RequestBodyCont
         return res.status(500).json({
              success : false,
              msg : "failed to add content",
-             detailError : err instanceof Error ? err.message : "something went wrong"
+             error : err instanceof Error ? err.message : "something went wrong"
         })
      }
 });
@@ -96,7 +96,7 @@ router.get("/content", authentication, async(req: Request<{}, {}, {}, {page ?: s
                return res.status(500).json({
                     success : false,
                     msg : "failed to find the contents",
-                    detailError : err instanceof Error ? err.message : err
+                    error : err instanceof Error ? err.message : err
                })
           }
 });
@@ -110,7 +110,7 @@ router.delete("/content/:contentId", authentication, async (req: Request<{ conte
       return res.status(400).json({
         success: false,
         msg: "Invalid DELETE request",
-        detailError: "Request param `contentId` is missing",
+        error: "Request param `contentId` is missing",
       });
     }
 
@@ -118,7 +118,7 @@ router.delete("/content/:contentId", authentication, async (req: Request<{ conte
       return res.status(400).json({
         success: false,
         msg: "Invalid contentId",
-        detailError: "Provided contentId is not a valid ObjectId",
+        error: "Provided contentId is not a valid ObjectId",
       });
     }
 
@@ -129,7 +129,7 @@ router.delete("/content/:contentId", authentication, async (req: Request<{ conte
         return res.status(404).json({
           success: false,
           msg: "Content not found",
-          detailError: "No content with the provided contentId",
+          error: "No content with the provided contentId",
         });
       }
 
@@ -144,7 +144,7 @@ router.delete("/content/:contentId", authentication, async (req: Request<{ conte
       return res.status(500).json({
         msg: "Failed to delete content",
         success: false,
-        detailError: err instanceof Error ? err.message : err,
+        error: err instanceof Error ? err.message : err,
       });
     }
 });

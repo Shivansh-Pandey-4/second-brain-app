@@ -5,7 +5,7 @@ export interface IContent{
           link ?: string;
           tags ?: string;
           userId : {
-               firstName : string;
+               name : string;
                _id : string;
           }
           createdAt : string;
@@ -16,7 +16,6 @@ export interface IData {
      success : boolean;
      msg : string;
      error ?: string;
-     detailError ?: string;
      contents ?: IContent[];
      pagination ?: {
           currentPage : number;
