@@ -83,7 +83,7 @@ const Signup = () => {
     return (
         <div className="flex flex-col  justify-center items-center h-screen">
 
-            <div className="max-w-3xl w-full mb-10">
+            <div className="max-w-3xl w-full mb-10 px-1">
                 <Link to={"/"}>
                     <Button>Go Home</Button>
                 </Link>

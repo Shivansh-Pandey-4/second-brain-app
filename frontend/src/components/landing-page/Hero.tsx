@@ -4,7 +4,7 @@ import Button from "../ui/Button";
 export default function Hero() {
 
     return (
-        <section className="relative flex min-h-screen items-center px-5 pt-24 sm:px-8">
+        <section id="hero" className="relative flex min-h-screen items-center px-5 pt-24 sm:px-8">
             <div className="pointer-events-none absolute left-1/2 top-20 -z-10 h-[500px] w-[700px] -translate-x-1/2 rounded-full bg-violet-600/15 blur-[140px]" />
 
             <div className="pointer-events-none absolute right-[-200px] top-[35%] -z-10 h-[400px] w-[400px] rounded-full bg-blue-600/10 blur-[120px]" />
