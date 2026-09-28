@@ -1,0 +1,50 @@
+name: Build Docker Image and deploy to EC2 instance
+
+on:
+  push:
+    branches:
+      - "main"
+
+jobs:
+  build_backend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v4
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+      - name: Build and push backend image
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: ./docker/Dockerfile.backend
+          push: true
+          tags: ${{secrets.DOCKERHUB_USERNAME}}/secondbrain_backend:${{github.sha}}
+
+  deploy_backend:
+    needs: build_backend
+    runs-on: ubuntu-latest
+    steps:
+      - name: SSH into the machine and Start the Backend-Container
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.PRIVATE_KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            mkdir -p ~/second_brain
+            cd ~/second_brain
+
+            sudo docker pull ${{secrets.DOCKERHUB_USERNAME}}/secondbrain_backend:${{github.sha}}
+
+            sudo docker rm -f secondbrain_backend || true
+
+            sudo docker run -d -p 3000:3000 --env-file .env --name secondbrain_backend ${{secrets.DOCKERHUB_USERNAME}}/secondbrain_backend:${{github.sha}}
+
+            sudo docker image prune -f
