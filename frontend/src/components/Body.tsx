@@ -17,6 +17,18 @@ const Body = () => {
     const [isOpen, setIsOpen] = useState(false);
     const { isloading, error, data, fetchData } = useFetch("api/v1/content", page, 3);
 
+    if (!data || !data.contents || data.contents.length === 0) {
+        return (
+            <div className="h-screen">
+                <AddContentModel
+                    refetch={fetchData}
+                    isOpen={isOpen}
+                    onClose={() => setIsOpen(false)}
+                />
+                <Empty onAddContent={() => setIsOpen(true)} />
+            </div>
+        )
+    }
 
     if (error) {
         return <div className="flex justify-center items-center min-h-screen">
@@ -30,9 +42,7 @@ const Body = () => {
         </div>
     }
 
-    if (!data || !data.contents) {
-        return <Empty />
-    }
+
 
     return (
         <div className="pt-8">
@@ -63,7 +73,7 @@ const Body = () => {
             <div className="flex flex-wrap mt-5 justify-center">
                 {
                     (data.contents.length === 0) ?
-                        <Empty />
+                        <Empty onAddContent={() => setIsOpen(true)} />
                         : data.contents.map((item, index) => <BrainCard value={item} key={index} onDelete={fetchData} />)
                 }
             </div>

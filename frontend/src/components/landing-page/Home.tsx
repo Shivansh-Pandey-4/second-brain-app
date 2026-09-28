@@ -1,4 +1,3 @@
-import Cta from "./CTA";
 import Features from "./Features";
 import Contact from "./Contact";
 import Header from "./Header";

@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { BACKEND_URL } from "../utils/config";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "./ui/Button";
 import { Loader2 } from "lucide-react";
 import Input from "./ui/Input";
+import BACKEND_URL from "../utils/getBackendUrl";
 
 
 const Signup = () => {

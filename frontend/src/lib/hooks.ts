@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
-import { BACKEND_URL } from "../utils/config"
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { type IData } from "./types";
+import BACKEND_URL from "../utils/getBackendUrl";
 
 export function useFetch(link: string, page : number, limit: number){
     const [data, setData] = useState<IData | null>(null);

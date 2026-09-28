@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { type IData } from "../lib/types";
-import { BACKEND_URL } from "../utils/config";
 import { toast } from "react-toastify";
 import BrainCard from "./BrainCard";
 import Button from "./ui/Button";
 import Pagination from "./Pagination";
+import BACKEND_URL from "../utils/getBackendUrl";
+
 
 const PublicContent = () => {
 
@@ -15,6 +16,7 @@ const PublicContent = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState(false);
     const navigate = useNavigate();
+
 
     async function fetchData() {
 

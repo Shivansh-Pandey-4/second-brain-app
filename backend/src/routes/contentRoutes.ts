@@ -60,7 +60,7 @@ router.get("/content", authentication, async(req: Request<{}, {}, {}, {page ?: s
           });
           const totalPage = Math.ceil(totalDocument / limit);
 
-          if(page > totalPage){
+          if((totalDocument > 0 && page > totalPage)){
             return res.status(404).json({
               success : false,
               msg : "page does not exit"
@@ -123,7 +123,7 @@ router.delete("/content/:contentId", authentication, async (req: Request<{ conte
     }
 
     try {
-      const deletedContent = await ContentModel.findOneAndDelete({_id : contentId});
+      const deletedContent = await ContentModel.findOneAndDelete({_id : contentId, userId : req.user_info?.user_id});
 
       if (!deletedContent) {
         return res.status(404).json({
