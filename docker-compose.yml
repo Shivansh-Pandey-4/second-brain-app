@@ -1,0 +1,37 @@
+services:
+  mongo: 
+    image: mongo
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=shivansh
+      - MONGO_INITDB_ROOT_PASSWORD=secret
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.backend
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env.example
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.frontend
+      args:
+        - VITE_BACKEND_URL=http://localhost:3000
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+    

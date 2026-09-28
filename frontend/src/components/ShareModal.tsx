@@ -94,7 +94,7 @@ const ShareModal = ({ isOpen, onClose }: ShareModalProps) => {
                             <div className="pt-5">
                                 {
                                     shareLink ? <Button onClick={() => fetchData(false)} className="px-5 hover:bg-red-600 hover:text-white">Stop Share Link</Button> :
-                                        <div>
+                                        <div className="space-x-4">
                                             <Button onClick={() => fetchData(true)} className="px-5 hover:bg-green-500 hover:text-white">Yes</Button>
 
                                             <Button onClick={() => onClose()} className="px-5 hover:bg-red-600 hover:text-white">No</Button>
