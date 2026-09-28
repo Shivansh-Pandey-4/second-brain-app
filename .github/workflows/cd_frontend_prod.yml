@@ -28,7 +28,7 @@ jobs:
           context: .
           file: ./docker/Dockerfile.frontend
           build-args: |
-            - VITE_BACKEND_URL=${{secrets.VITE_BACKEND_URL}}
+            VITE_BACKEND_URL=${{secrets.VITE_BACKEND_URL}}
           push: true
           tags: ${{secrets.DOCKERHUB_USERNAME}}/secondbrain_frontend:${{github.sha}}
 
