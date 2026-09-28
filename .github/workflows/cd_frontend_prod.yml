@@ -5,12 +5,12 @@ on:
     branches:
       - "main"
     paths:
-      - "backend/**"
-      - "docker/Dockerfile.backend"
-      - ".github/workflows/cd_backend_prod.yml"
+      - "frontend/**"
+      - "docker/Dockerfile.frontend"
+      - ".github/workflows/cd_frontend_prod.yml"
 
 jobs:
-  build_backend:
+  build_frontend_image:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source code
@@ -22,19 +22,21 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      - name: Build and push backend image
+      - name: Build and push frontend image
         uses: docker/build-push-action@v7
         with:
           context: .
-          file: ./docker/Dockerfile.backend
+          file: ./docker/Dockerfile.frontend
+          build-args: |
+            - VITE_BACKEND_URL=${{secrets.VITE_BACKEND_URL}}
           push: true
-          tags: ${{secrets.DOCKERHUB_USERNAME}}/secondbrain_backend:${{github.sha}}
+          tags: ${{secrets.DOCKERHUB_USERNAME}}/secondbrain_frontend:${{github.sha}}
 
-  deploy_backend:
-    needs: build_backend
+  deploy_frontend:
+    needs: build_frontend_image
     runs-on: ubuntu-latest
     steps:
-      - name: SSH into the machine and Start the Backend-Container
+      - name: SSH into the machine and Start the Frontend Container
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.HOST }}
@@ -45,10 +47,10 @@ jobs:
             mkdir -p ~/second_brain
             cd ~/second_brain
 
-            sudo docker pull ${{secrets.DOCKERHUB_USERNAME}}/secondbrain_backend:${{github.sha}}
+            sudo docker pull ${{secrets.DOCKERHUB_USERNAME}}/secondbrain_frontend:${{github.sha}}
 
-            sudo docker rm -f secondbrain_backend || true
+            sudo docker rm -f secondbrain_frontend || true
 
-            sudo docker run -d -p 3000:3000 --env-file .env --name secondbrain_backend ${{secrets.DOCKERHUB_USERNAME}}/secondbrain_backend:${{github.sha}}
+            sudo docker run -d -p 5173:80 --name secondbrain_frontend ${{secrets.DOCKERHUB_USERNAME}}/secondbrain_frontend:${{github.sha}}
 
             sudo docker image prune -f
