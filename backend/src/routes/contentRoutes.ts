@@ -1,5 +1,5 @@
 import { Request, Response, Router } from "express";
-import { createContentSchema, RequestBodyContent } from "../zod-validation/contentSchema.js";
+import { contentFilterSchema, createContentSchema, RequestBodyContent } from "../zod-validation/contentSchema.js";
 import ContentModel from "../models/contentModel.js";
 import authentication from "../middleware/userAuthentication.js";
 import mongoose from "mongoose";
@@ -36,28 +36,40 @@ router.post("/content", authentication, async(req: Request<{},{},RequestBodyCont
      }
 });
 
-router.get("/content", authentication, async(req: Request<{}, {}, {}, {page ?: string; limit ?: string;}>, res: Response)=>{
+
+router.get("/content", authentication, async(req: Request<{}, {}, {}, {filter ?: string; page ?: string; limit ?: string;}>, res: Response)=>{
 
     const requestedPage = parseInt(req.query.page || "1");
     const requestedLimit = parseInt(req.query.limit || "5");
+    const filter = req.query.filter;
 
     const page = (Number.isNaN(requestedPage) || requestedPage < 1 ) ? 1 : requestedPage;
     const limit = (Number.isNaN(requestedLimit) || requestedLimit < 1) ? 5 : Math.min(requestedLimit, 3);
-
+    
     const skip = (page - 1) * limit;
+    
+    const result = contentFilterSchema.safeParse({type: filter?.trim()});
+
+    if(!result.success){
+        return res.status(400).json({
+          success : false,
+          msg : "invalid filter type provided",
+          error : result.error.issues[0]?.message
+        })
+    }
 
 
      try{
-          const allContent = await ContentModel
-          .find({userId : req.user_info?.user_id})
-          .sort({'createdAt' : -1})
-          .skip(skip)
-          .limit(limit)
-          .populate({path : "userId", select: "firstName"});
 
-          const totalDocument = await ContentModel.countDocuments({
-            userId : req.user_info?.user_id
-          });
+         const filter = result.data;
+         const query: {type?: string; userId: string;} = {userId: req.user_info?.user_id!} 
+
+         if(filter.type !== "home"){
+          query.type = filter.type;
+         }
+
+
+          const totalDocument = await ContentModel.countDocuments(query);
           const totalPage = Math.ceil(totalDocument / limit);
 
           if((totalDocument > 0 && page > totalPage)){
@@ -66,6 +78,13 @@ router.get("/content", authentication, async(req: Request<{}, {}, {}, {page ?: s
               msg : "page does not exit"
             })
           }
+
+          const allContent = await ContentModel
+           .find(query)
+           .sort({'createdAt' : -1})
+           .skip(skip)
+           .limit(limit)
+           .populate({path : "userId", select: "firstName"});
 
           if(allContent.length !==0){
                 return res.json({

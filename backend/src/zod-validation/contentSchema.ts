@@ -7,6 +7,11 @@ export const createContentSchema = zod.object({
 
      title : zod.string().trim().min(2,{error : "minimum 2 characters is required"}),
      tags : zod.string().trim().optional()
-})
+});
+
+export const contentFilterSchema = zod.object({
+     type : zod.literal(["tweet", "document", "youtube", "brainthought", "home"], {error: "does not include this type"})
+});
+
 
 export type RequestBodyContent = zod.infer<typeof createContentSchema>;
