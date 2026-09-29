@@ -5,10 +5,10 @@ interface IProps {
     data: IData;
     page: number;
     setPage: (page: number) => void;
-    isloading: boolean;
+    isLoading: boolean;
 }
 
-export default function Pagination({ data, page, setPage, isloading }: IProps) {
+export default function Pagination({ data, page, setPage, isLoading }: IProps) {
 
     const pagination = data.pagination;
 
@@ -36,13 +36,13 @@ export default function Pagination({ data, page, setPage, isloading }: IProps) {
             <Button
                 variant="colorFull"
                 onClick={handlePrevBtn}
-                disabled={page <= 1 || isloading === true}
+                disabled={page <= 1 || isLoading === true}
             >Prev</Button>
 
             <Button
                 variant="colorFull"
                 onClick={handleNextBtn}
-                disabled={page >= pagination.totalPage || isloading === true}
+                disabled={page >= pagination.totalPage || isLoading === true}
             >Next
             </Button>
         </div>

@@ -17,17 +17,17 @@ export const sidebarItems = [
     },
     {
         id :  2,
-        name : "Twitter",
+        name : "Tweet",
         icon : SlSocialTwitter,
     },
     {
         id : 3,
-        name : "Docs",
+        name : "Document",
         icon : IoDocumentTextOutline
     },
     {
         id : 4,
-        name : "Links",
+        name : "Brainthought",
         icon : IoLinkSharp
     },
     {

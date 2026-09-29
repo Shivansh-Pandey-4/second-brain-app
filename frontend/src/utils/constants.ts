@@ -1,6 +1,10 @@
 import { IconBrandGithub, IconBrandLinkedin, IconBrandTwitter } from "@tabler/icons-react"
 import { Brain, FileText, Link2, Search, Sparkles, Zap } from "lucide-react"
 
+
+export const DefaultLimit = 3;
+
+
 export const featureInfo = [
 
     {

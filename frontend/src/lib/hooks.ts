@@ -4,9 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { type IData } from "./types";
 import BACKEND_URL from "../utils/getBackendUrl";
 
-export function useFetch(link: string, page : number, limit: number){
+export function useFetch(link: string, page : number, limit: number, filter: string="home"){
     const [data, setData] = useState<IData | null>(null);
-    const [isloading,setIsloading] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(false);
     const navigate = useNavigate();
 
@@ -20,7 +20,7 @@ export function useFetch(link: string, page : number, limit: number){
 
         try {
 
-            const response = await fetch(`${BACKEND_URL}/${link}?page=${page}&limit=${limit}`, 
+            const response = await fetch(`${BACKEND_URL}/${link}?filter=${filter}&page=${page}&limit=${limit}`, 
             {
                 method : "GET",
                 headers : {
@@ -38,11 +38,11 @@ export function useFetch(link: string, page : number, limit: number){
             }
 
             if(!response.ok){
-                setError(true);
                 if(data){
                     if(!data.success){
                         toast.error(data.error || data.msg);
                         if(data.error?.includes("jwt")){
+                            localStorage.removeItem("token");
                             navigate("/signin");
                             return;
                         }
@@ -65,15 +65,15 @@ export function useFetch(link: string, page : number, limit: number){
               }
               return toast.error( data?.error || data?.msg ||( err instanceof Error? err.message : "something went wrong"));
          }finally{
-            setIsloading(false);
+            setIsLoading(false);
 
          }
     }
 
     useEffect(()=>{
         fetchData();
-    },[link, page]);
+    },[link, page, filter]);
 
-    return {isloading,error,data,fetchData};
+    return {isLoading,error,data,fetchData};
 
 }

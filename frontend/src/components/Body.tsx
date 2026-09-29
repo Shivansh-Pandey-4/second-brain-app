@@ -5,17 +5,43 @@ import Button from "./ui/Button";
 import { IoMdAdd } from "react-icons/io";
 import AddContentModel from "./AddContentModel";
 import ShareModal from "./ShareModal";
-import { useFetch } from "../lib/hooks";
 import Empty from "./Empty";
 import Pagination from "./Pagination";
+import { IData } from "../lib/types";
 
 
-const Body = () => {
+interface IProps {
+    isLoading: boolean;
+    page: number;
+    setPage: (page: number) => void;
+    error: boolean;
+    data: IData | null;
+    fetchData: () => void;
 
-    const [page, setPage] = useState(1);
+}
+
+
+const Body = (props: IProps) => {
+
     const [isShare, setIsShare] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
-    const { isloading, error, data, fetchData } = useFetch("api/v1/content", page, 3);
+    const { data, error, fetchData, isLoading, page, setPage } = props;
+
+
+
+
+    if (isLoading) {
+        return <div className="flex justify-center items-center min-h-screen">
+            <h1 className="text-4xl">Loading...</h1>
+        </div>
+    }
+
+    if (error) {
+        return <div className="flex flex-col justify-center items-center min-h-screen">
+            <h1 className="text-lg lg:text-4xl">Failed To Fetch User Content.</h1>
+            <h2>Try Again Later.</h2>
+        </div>
+    }
 
     if (!data || !data.contents || data.contents.length === 0) {
         return (
@@ -29,19 +55,6 @@ const Body = () => {
             </div>
         )
     }
-
-    if (error) {
-        return <div className="flex justify-center items-center min-h-screen">
-            <h1 className="text-4xl">Failed To Fetch User Content.</h1>
-        </div>
-    }
-
-    if (isloading) {
-        return <div className="flex justify-center items-center min-h-screen">
-            <h1 className="text-4xl">Loading...</h1>
-        </div>
-    }
-
 
 
     return (
@@ -79,7 +92,7 @@ const Body = () => {
             </div>
 
             {
-                data.contents.length !== 0 && <Pagination isloading={isloading} data={data} page={page} setPage={setPage} />
+                data.contents.length !== 0 && <Pagination isLoading={isLoading} data={data} page={page} setPage={setPage} />
             }
 
         </div>

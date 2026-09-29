@@ -6,10 +6,11 @@ import { useNavigate } from "react-router-dom";
 
 
 
-const SideBar = () => {
+const SideBar = ({ setFilter }: { setFilter: (filter: string) => void; }) => {
 
     const [isActive, setIsActive] = useState("Home");
     const navigate = useNavigate();
+
 
 
     function handleIsActive(e: React.MouseEvent<HTMLLIElement, MouseEvent>) {
@@ -20,7 +21,9 @@ const SideBar = () => {
             return navigate("/", { replace: true });
         }
         else {
-            setIsActive(e.currentTarget.id)
+            setIsActive(e.currentTarget.id);
+            console.log("id inside isActive: ", e.currentTarget.id);
+            setFilter(e.currentTarget.id.toLowerCase());
         }
     }
 
@@ -43,7 +46,7 @@ const SideBar = () => {
                             const Icon = item.icon;
 
                             return (
-                                <li onClick={handleIsActive} key={item.id} className={`flex items-center lg:justify-between justify-center py-2 mb-6 px-2 rounded-sm hover:bg-gray-200 cursor-pointer border border-gray-100 ${isActive === item.name && "bg-gray-300 hover:bg-gray-300"} group hover:scale-105 transition-all`} id={item.name}>
+                                <li onClick={handleIsActive} key={item.id} className={`flex items-center lg:justify-between justify-center py-2 mb-6 px-2 rounded-sm hover:bg-gray-200 cursor-pointer border border-gray-100 ${isActive === item.name && "bg-gray-300 hover:bg-gray-300"} group hover:scale-105 transition-all`} id={item.name} value={item.name}>
 
                                     <h2 className="text-2xl"><Icon className="shrink-0" />
                                     </h2>
