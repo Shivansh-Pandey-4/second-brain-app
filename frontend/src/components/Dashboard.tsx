@@ -10,7 +10,9 @@ export default function Dashboard() {
 
     const [page, setPage] = useState(1);
     const [filter, setFilter] = useState("home");
-    const { isLoading, error, data, fetchData } = useFetch("api/v1/content", page, DefaultLimit, filter);
+    const [searchTitle, setSearchTitle] = useState("");
+
+    const { isLoading, error, data, fetchData } = useFetch("api/v1/content", page, DefaultLimit, filter, searchTitle);
 
 
 
@@ -24,7 +26,7 @@ export default function Dashboard() {
                     }} />
                 </div>
                 <div className='col-span-3 md:col-span-8'>
-                    <Body isLoading={isLoading} error={error} data={data} fetchData={fetchData} page={page} setPage={setPage} />
+                    <Body isLoading={isLoading} error={error} data={data} fetchData={fetchData} page={page} setPage={setPage} setSearch={setSearchTitle} search={searchTitle} />
                 </div>
             </div>
         </>

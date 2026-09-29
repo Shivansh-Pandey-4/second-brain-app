@@ -18,7 +18,8 @@ interface IProps {
     error: boolean;
     data: IData | null;
     fetchData: () => void;
-
+    setSearch: (search: string) => void;
+    search: string;
 }
 
 
@@ -26,8 +27,7 @@ const Body = (props: IProps) => {
 
     const [isShare, setIsShare] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
-    const { data, error, fetchData, isLoading, page, setPage } = props;
-
+    const { data, error, fetchData, isLoading, page, setPage, search, setSearch } = props;
 
 
 
@@ -46,7 +46,10 @@ const Body = (props: IProps) => {
 
     if (!data || !data.contents || data.contents.length === 0) {
         return (
-            <div className="h-screen">
+            <div className="h-screen py-10 mx-4 md:mx-11">
+                <div className="flex items-center justify-center">
+                    <SearchBox setSearch={setSearch} search={search} />
+                </div>
                 <AddContentModel
                     refetch={fetchData}
                     isOpen={isOpen}
@@ -85,7 +88,13 @@ const Body = (props: IProps) => {
             </section>
 
             <div className="mt-3 flex items-center justify-center py-8 mx-4 md:mx-11">
-                <SearchBox />
+                <SearchBox
+                    setSearch={(search: string) => {
+                        setSearch(search);
+                        setPage(1);
+                    }}
+                    search={search}
+                />
             </div>
 
             <div className="flex flex-wrap mt-4 justify-center">

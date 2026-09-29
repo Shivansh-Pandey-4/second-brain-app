@@ -11,6 +11,10 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import getYouTubeEmbedUrl from "../lib/getYoutubeEmbeding";
 import BACKEND_URL from "../utils/getBackendUrl";
+import YoutubeCard from "./brainCards/Youtube";
+import TweetCard from "./brainCards/Tweet";
+import DocumentCard from "./brainCards/Document";
+import BrainThoughtCard from "./brainCards/BrainThought";
 
 
 type BrainCardProps = {
@@ -27,11 +31,7 @@ const BrainCard = (props: BrainCardProps) => {
 
     const contentType = type.toLowerCase();
 
-    const youtubeEmbedUrl =
-        contentType === "youtube"
-            ? getYouTubeEmbedUrl(link)
-            : null;
-
+    const youtubeEmbedUrl = contentType === "youtube" ? getYouTubeEmbedUrl(link) : null;
 
 
     async function deleteCard(_id: string) {
@@ -94,42 +94,17 @@ const BrainCard = (props: BrainCardProps) => {
             <div className="text-lg font-serif">
                 {
                     type.toLowerCase() === "youtube" && youtubeEmbedUrl && (
-                        <div className="py-3">
-                            <iframe
-                                className="w-full h-100 rounded-md"
-                                src={youtubeEmbedUrl}
-                                title="YouTube video player"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                referrerPolicy="strict-origin-when-cross-origin"
-                                allowFullScreen
-                            />
-                        </div>
+                        <YoutubeCard youtubeEmbedUrl={youtubeEmbedUrl} />
                     )
                 }
                 {
-                    (type.toLowerCase() === "tweet" && <div> <blockquote className="twitter-tweet">
-                        <a href={link?.replace("/x.com", "/twitter.com")}>
-                        </a>
-                    </blockquote>
-                        <script async src="https://platform.twitter.com/widgets.js" charSet="utf-8"></script>
-                    </div>)
+                    (type.toLowerCase() === "tweet" && <TweetCard link={link} />)
                 }
                 {
-                    (type.toLowerCase() === "document" && <div className="my-5 flex flex-col items-center border border-gray-200 p-3 rounded-lg bg-slate-100 ">
-                        <h1 className="text-center">This is the document type content</h1>
-                        <a className="underline text-blue-600 my-5" href={link} target="_blank">document link</a>
-                    </div>
-                    )
+                    type.toLowerCase() === "document" && (<DocumentCard link={link} />)
                 }
                 {
-                    (type.toLowerCase() === "brainthought" && <div className="flex flex-col grow">
-                        <div className="mt-8 bg-zinc-100 p-3 rounded-md">
-                            <h1>This is <span className="font-bold">brainthought</span> type content</h1>
-                            <div className="mt-3 text-center">
-                                <a className="underline text-blue-600 text-xl" href={link} target="_blank">document link - Click Here</a>
-                            </div>
-                        </div>
-                    </div>)
+                    (type.toLowerCase() === "brainthought" && <BrainThoughtCard link={link} />)
                 }
             </div>
             <div className="flex flex-wrap gap-2 py-2">

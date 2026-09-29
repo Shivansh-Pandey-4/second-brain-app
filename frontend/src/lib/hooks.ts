@@ -1,14 +1,19 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { type IData } from "./types";
 import BACKEND_URL from "../utils/getBackendUrl";
 
-export function useFetch(link: string, page : number, limit: number, filter: string="home"){
+
+export function useFetch(link: string, page : number, limit: number, filter: string="home", search: string){
+
     const [data, setData] = useState<IData | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(false);
     const navigate = useNavigate();
+    
+    const timerRef = useRef<NodeJS.Timeout>(null);
+    const isFirstSearchRender = useRef(true);
 
 
     async function fetchData(){
@@ -20,7 +25,7 @@ export function useFetch(link: string, page : number, limit: number, filter: str
 
         try {
 
-            const response = await fetch(`${BACKEND_URL}/${link}?filter=${filter}&page=${page}&limit=${limit}`, 
+            const response = await fetch(`${BACKEND_URL}/${link}?filter=${filter}&search=${search}&page=${page}&limit=${limit}`, 
             {
                 method : "GET",
                 headers : {
@@ -73,6 +78,28 @@ export function useFetch(link: string, page : number, limit: number, filter: str
     useEffect(()=>{
         fetchData();
     },[link, page, filter]);
+
+
+    useEffect(()=>{
+        if(isFirstSearchRender.current){
+            isFirstSearchRender.current = false;
+            return;
+        }
+
+        if(timerRef.current){
+            clearTimeout(timerRef.current);
+        }
+
+        timerRef.current = setTimeout(()=>{
+            fetchData();
+        }, 1000);
+
+        return ()=>{
+            if(timerRef.current)
+            clearTimeout(timerRef.current)
+        }
+        
+    }, [search]);
 
     return {isLoading,error,data,fetchData};
 
