@@ -119,7 +119,7 @@ const PublicContent = () => {
                 }
             </div>
             {
-                data.contents.length !== 0 && <Pagination data={data} isloading={loading} page={page} setPage={setPage} />
+                data.contents.length !== 0 && <Pagination data={data} isLoading={loading} page={page} setPage={setPage} />
             }
         </div>
     )

@@ -3,11 +3,12 @@ import { useState } from "react";
 import BrainCard from "./BrainCard";
 import Button from "./ui/Button";
 import { IoMdAdd } from "react-icons/io";
-import AddContentModel from "./AddContentModel";
-import ShareModal from "./ShareModal";
+import AddContentModel from "./ui/AddContentModel";
+import ShareModal from "./ui/ShareModal";
 import Empty from "./Empty";
 import Pagination from "./Pagination";
 import { IData } from "../lib/types";
+import SearchBox from "./Search";
 
 
 interface IProps {
@@ -83,7 +84,11 @@ const Body = (props: IProps) => {
                 </div>
             </section>
 
-            <div className="flex flex-wrap mt-5 justify-center">
+            <div className="mt-3 flex items-center justify-center py-8 mx-4 md:mx-11">
+                <SearchBox />
+            </div>
+
+            <div className="flex flex-wrap mt-4 justify-center">
                 {
                     (data.contents.length === 0) ?
                         <Empty onAddContent={() => setIsOpen(true)} />

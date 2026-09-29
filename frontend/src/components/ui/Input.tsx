@@ -3,7 +3,7 @@ import { ComponentProps } from "react";
 
 
 interface IProps extends ComponentProps<"input"> {
-    className: string;
+    className?: string;
 }
 
 export default function Input({ className, ...props }: IProps) {

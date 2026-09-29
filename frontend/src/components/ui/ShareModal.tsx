@@ -1,10 +1,10 @@
-import Button from "./ui/Button";
-import { ShareModalProps } from "../lib/types";
+import Button from "./Button";
+import { ShareModalProps } from "../../lib/types";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { Copy, CopyCheck } from "lucide-react";
-import BACKEND_URL from "../utils/getBackendUrl";
+import BACKEND_URL from "../../utils/getBackendUrl";
 
 const ShareModal = ({ isOpen, onClose }: ShareModalProps) => {
 
@@ -81,7 +81,7 @@ const ShareModal = ({ isOpen, onClose }: ShareModalProps) => {
     return (
         <>
             {
-                isOpen && <div ref={myRef} onClick={closeMethod} className="fixed inset-0 backdrop-opacity-80 backdrop-blur-sm flex justify-center items-center">
+                isOpen && <div ref={myRef} onClick={closeMethod} className="fixed z-50 inset-0 backdrop-opacity-80 backdrop-blur-sm flex justify-center items-center">
 
                     <div className="w-2xl flex flex-col">
 

@@ -1,9 +1,9 @@
 import { useRef, useState } from "react";
-import { ShareModalProps } from "../lib/types";
-import Button from "./ui/Button";
+import { ShareModalProps } from "../../lib/types";
+import Button from "./Button";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import BACKEND_URL from "../utils/getBackendUrl";
+import BACKEND_URL from "../../utils/getBackendUrl";
 
 
 const AddContentModel = ({ isOpen, onClose, refetch }: ShareModalProps) => {
@@ -77,7 +77,7 @@ const AddContentModel = ({ isOpen, onClose, refetch }: ShareModalProps) => {
   return (
     <>
       {
-        isOpen && <div ref={myRef} onClick={closeMethod} className="fixed inset-0 backdrop-opacity-80 backdrop-blur-sm flex justify-center items-center">
+        isOpen && <div ref={myRef} onClick={closeMethod} className="fixed z-50 inset-0 backdrop-opacity-80 backdrop-blur-sm flex justify-center items-center">
 
           <div className="w-2xl flex flex-col">
 

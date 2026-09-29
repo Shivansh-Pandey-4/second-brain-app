@@ -37,11 +37,12 @@ router.post("/content", authentication, async(req: Request<{},{},RequestBodyCont
 });
 
 
-router.get("/content", authentication, async(req: Request<{}, {}, {}, {filter ?: string; page ?: string; limit ?: string;}>, res: Response)=>{
+router.get("/content", authentication, async(req: Request<{}, {}, {}, {filter ?: string; search ?:string; page ?: string; limit ?: string;}>, res: Response)=>{
 
     const requestedPage = parseInt(req.query.page || "1");
     const requestedLimit = parseInt(req.query.limit || "5");
     const filter = req.query.filter;
+    const search = req.query.search;
 
     const page = (Number.isNaN(requestedPage) || requestedPage < 1 ) ? 1 : requestedPage;
     const limit = (Number.isNaN(requestedLimit) || requestedLimit < 1) ? 5 : Math.min(requestedLimit, 3);
@@ -62,10 +63,20 @@ router.get("/content", authentication, async(req: Request<{}, {}, {}, {filter ?:
      try{
 
          const filter = result.data;
-         const query: {type?: string; userId: string;} = {userId: req.user_info?.user_id!} 
+         const query: {type?: string; userId: string; title?: {$regex: string; $options: string;}} = 
+         {
+          userId: req.user_info?.user_id!
+        } 
 
          if(filter.type !== "home"){
           query.type = filter.type;
+         }
+
+         if(search){
+            query.title = {
+               $regex : search,
+               $options : "i"
+            };
          }
 
 
