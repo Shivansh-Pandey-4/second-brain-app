@@ -1,5 +1,6 @@
 import { ArrowRight, Brain, Check, ChevronRight, FileText, Link2, Search, Sparkles, Zap } from "lucide-react";
 import Button from "../ui/Button";
+import { Link } from "react-router-dom";
 
 export default function Hero() {
 
@@ -22,9 +23,13 @@ export default function Hero() {
                     </p>
                     <div className="mt-9 flex flex-col items-center gap-3 sm:flex-row sm:justify-center lg:justify-start">
 
-                        <Button className="flex w-full items-center justify-center gap-2 rounded-xl bg-white px-6 py-3.5 text-sm font-semibold text-black transition-all ease-in-out hover:scale-105 hover:bg-white sm:w-auto"> Start building your brain <ArrowRight size={17} /> </Button>
+                        <Link to={"signin"}>
+                            <Button className="flex w-full items-center justify-center gap-2 rounded-xl bg-white px-6 py-3.5 text-sm font-semibold text-black transition-all ease-in-out hover:scale-105 hover:bg-white sm:w-auto"> Start building your brain <ArrowRight size={17} /> </Button>
+                        </Link>
 
-                        <Button className="flex w-full items-center justify-center gap-2 rounded-xl border border-white bg-white/[0.03] px-6 py-3.5 text-sm font-medium text-zinc-300 backdrop-blur transition-all ease-in-out hover:scale-105 hover:bg-white/[0.07] hover:text-white sm:w-auto"> Explore features <ChevronRight size={16} /> </Button>
+                        <a href="#features">
+                            <Button className="flex w-full items-center justify-center gap-2 rounded-xl border border-white bg-white/[0.03] px-6 py-3.5 text-sm font-medium text-zinc-300 backdrop-blur transition-all ease-in-out hover:scale-105 hover:bg-white/[0.07] hover:text-white sm:w-auto"> Explore features <ChevronRight size={16} /> </Button>
+                        </a>
                     </div>
 
                     <div className="mt-8 flex items-center justify-center gap-2 text-xs text-zinc-400 lg:justify-start">
