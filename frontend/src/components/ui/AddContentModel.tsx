@@ -3,7 +3,7 @@ import { ShareModalProps } from "../../lib/types";
 import Button from "./Button";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import BACKEND_URL from "../../utils/getBackendUrl";
+import { BACKEND_URL } from "../../utils/getUrl";
 
 
 const AddContentModel = ({ isOpen, onClose, refetch }: ShareModalProps) => {
@@ -67,7 +67,7 @@ const AddContentModel = ({ isOpen, onClose, refetch }: ShareModalProps) => {
   function handleForm(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    if (formData.title.length < 3) {
+    if (formData.title.trim().length < 3) {
       toast.error("title should be 3 letter long.")
       return;
     }
@@ -79,17 +79,17 @@ const AddContentModel = ({ isOpen, onClose, refetch }: ShareModalProps) => {
       {
         isOpen && <div ref={myRef} onClick={closeMethod} className="fixed z-50 inset-0 backdrop-opacity-80 backdrop-blur-sm flex justify-center items-center">
 
-          <div className="w-2xl flex flex-col">
+          <div className=" w-2xs  md:w-xl  lg:w-2xl flex flex-col">
 
             <button onClick={onClose} className="place-self-end cursor-pointer py-1 mb-1 bg-black px-2 rounded-xl">{"❌"}</button>
 
-            <div className="flex flex-col items-center border rounded-lg p-3 h-80 bg-white" >
+            <div className=" flex flex-col items-center border rounded-lg p-3 h-80 bg-white" >
 
               <h1 className="text-2xl">Brain Dump Zone.</h1>
 
               <form onSubmit={handleForm}>
 
-                <div className="pt-5 flex flex-col w-sm">
+                <div className="pt-5 flex flex-col w-2xs  md:w-xl  lg:w-2xl  px-4">
 
                   <select required value={formData.type} onChange={(e) => setFormData({ ...formData, type: e.target.value })} className="border px-2 py-1 mb-4 rounded-md">
 
@@ -106,8 +106,8 @@ const AddContentModel = ({ isOpen, onClose, refetch }: ShareModalProps) => {
 
                   <input type="text" placeholder="Enter Tags ex: #productivityHack #futurePlans etc" className="border px-3 py-1 rounded-md mb-3" value={formData.tags} onChange={(e) => setFormData({ ...formData, tags: e.target.value })} />
 
-                  <div className="flex justify-center">
-                    <Button variant="colorFull" className="px-5 hover:bg-green-500 hover:text-white">
+                  <div className="flex justify-center py-3">
+                    <Button variant="colorFull" className="px-5 hover:bg-green-500 hover:text-white w-full">
                       Submit</Button>
                   </div>
 
@@ -116,6 +116,10 @@ const AddContentModel = ({ isOpen, onClose, refetch }: ShareModalProps) => {
 
             </div>
           </div>
+
+          {/* <div className="h-50 w-2xs  md:w-xl  lg:w-2xl border">
+
+          </div> */}
         </div>
       }
     </>

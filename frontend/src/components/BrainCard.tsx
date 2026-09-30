@@ -10,7 +10,7 @@ import Button from "./ui/Button";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import getYouTubeEmbedUrl from "../lib/getYoutubeEmbeding";
-import BACKEND_URL from "../utils/getBackendUrl";
+import { BACKEND_URL } from "../utils/getUrl";
 import YoutubeCard from "./brainCards/Youtube";
 import TweetCard from "./brainCards/Tweet";
 import DocumentCard from "./brainCards/Document";

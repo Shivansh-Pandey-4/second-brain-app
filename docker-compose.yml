@@ -37,6 +37,7 @@ services:
       - "5173:5173"
     environment:
       - VITE_BACKEND_URL=http://localhost:3000
+      - VITE_FRONTEND_URL=http://localhost:5173
     volumes:
       - ./frontend:/app/frontend
       - /app/frontend/node_modules

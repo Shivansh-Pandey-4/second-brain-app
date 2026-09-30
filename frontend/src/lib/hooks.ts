@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { type IData } from "./types";
-import BACKEND_URL from "../utils/getBackendUrl";
+import {BACKEND_URL} from "../utils/getUrl";
 
 
 export function useFetch(link: string, page : number, limit: number, filter: string="home", search: string){

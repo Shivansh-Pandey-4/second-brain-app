@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { Copy, CopyCheck } from "lucide-react";
-import BACKEND_URL from "../../utils/getBackendUrl";
+import { BACKEND_URL, FRONTEND_URL } from "../../utils/getUrl";
 
 const ShareModal = ({ isOpen, onClose }: ShareModalProps) => {
 
@@ -41,7 +41,7 @@ const ShareModal = ({ isOpen, onClose }: ShareModalProps) => {
                 return;
             }
             if (data.hashString) {
-                setShareLink(`http://localhost:5173/brain/${data?.hashString}`);
+                setShareLink(`${FRONTEND_URL}/brain/${data?.hashString}`);
             } else {
                 setShareLink("");
             }
@@ -83,15 +83,15 @@ const ShareModal = ({ isOpen, onClose }: ShareModalProps) => {
             {
                 isOpen && <div ref={myRef} onClick={closeMethod} className="fixed z-50 inset-0 backdrop-opacity-80 backdrop-blur-sm flex justify-center items-center">
 
-                    <div className="w-2xl flex flex-col">
+                    <div className="w-2xs  md:w-xl  lg:w-2xl flex flex-col">
 
                         <button onClick={onClose} className="place-self-end cursor-pointer py-1 mb-1 bg-black px-2 rounded-xl">{"❌"}</button>
 
-                        <div className="flex flex-col items-center border rounded-lg p-3 h-45 bg-white" >
+                        <div className="w-2xs  md:w-xl  lg:w-2xl flex flex-col items-center border rounded-lg p-3 bg-white" >
 
-                            <h1 className="text-2xl">Want to share your second brain content with others ?</h1>
+                            <h1 className="text-md text-center lg:text-2xl">Want to share your second brain content with others ?</h1>
 
-                            <div className="pt-5">
+                            <div className="pt-5 mt-3">
                                 {
                                     shareLink ? <Button onClick={() => fetchData(false)} className="px-5 hover:bg-red-600 hover:text-white">Stop Share Link</Button> :
                                         <div className="space-x-4">
@@ -102,13 +102,13 @@ const ShareModal = ({ isOpen, onClose }: ShareModalProps) => {
                                 }
                             </div>
                             {
-                                shareLink && <div className=" mt-3 flex items-center justify-between space-x-3">
+                                shareLink && <div className="mt-3 flex items-center justify-between flex-col space-y-2 md:space-x-3 md:flex-row ">
 
-                                    <div className="text-center border border-black  text-blue-700 px-3 py-1 rounded-lg bg-gray-200 hover:bg-gray-300 font-serif">{shareLink}</div>
+                                    <p className="min-w-2xs text-xs md:text-lg text-center border border-black  text-blue-700 md:px-3 py-1 rounded-lg bg-gray-200 hover:bg-gray-300 font-serif">{shareLink}</p>
 
                                     <Button disabled={isCopied} onClick={() => copyText()} className="hover:cursor-pointer hover:bg-gray-100 p-1 rounded-md transition-all">
                                         {
-                                            isCopied ? <CopyCheck className="shrink-0" /> : <Copy className="shrink-0" />
+                                            isCopied ? <CopyCheck className="md:shrink-0" /> : <Copy className=" md:shrink-0" />
                                         }
                                     </Button>
                                 </div>

@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import BrainCard from "./BrainCard";
 import Button from "./ui/Button";
 import Pagination from "./Pagination";
-import BACKEND_URL from "../utils/getBackendUrl";
+import { BACKEND_URL } from "../utils/getUrl";
 
 
 const PublicContent = () => {
