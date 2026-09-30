@@ -6,7 +6,7 @@ on:
       - "main"
     paths:
       - "frontend/**"
-      - "docker/Dockerfile.frontend"
+      - "docker/Dockerfile.frontend.prod"
       - ".github/workflows/cd_frontend_prod.yml"
 
 jobs:
@@ -26,7 +26,7 @@ jobs:
         uses: docker/build-push-action@v7
         with:
           context: .
-          file: ./docker/Dockerfile.frontend
+          file: ./docker/Dockerfile.frontend.prod
           build-args: |
             VITE_BACKEND_URL=${{secrets.VITE_BACKEND_URL}}
           push: true

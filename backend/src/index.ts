@@ -1,4 +1,4 @@
-import  express, { NextFunction } from 'express';
+import  express from 'express';
 import mongoose from 'mongoose';
 import  'dotenv/config';
 import cors from "cors";
@@ -37,6 +37,6 @@ app.use("/api/v1/",shareRouter);
 app.get("/", (req, res)=>{
     return res.json({
         success : true,
-        msg : "hello world "
+        msg : "hello world here again welcome here"
     })
 })

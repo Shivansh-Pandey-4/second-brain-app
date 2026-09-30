@@ -15,23 +15,32 @@ services:
   backend:
     build:
       context: .
-      dockerfile: ./docker/Dockerfile.backend
+      dockerfile: ./docker/Dockerfile.backend.dev
     ports:
       - "3000:3000"
-    env_file:
-      - ./backend/.env.example
+    environment:
+      - MONGO_DB_CONN=mongodb://shivansh:secret@mongo:27017
+      - MY_PLATEFORM_PREFIX=shivansh
+      - PORT=3000
+      - JWT_SECRET_KEY=secret
+    volumes:
+      - ./backend:/app/backend
+      - /app/backend/node_modules
     depends_on:
-      mongo:
-        condition: service_healthy
-
+      - mongo
+  
   frontend:
     build:
       context: .
-      dockerfile: ./docker/Dockerfile.frontend
-      args:
-        - VITE_BACKEND_URL=http://localhost:3000
+      dockerfile: ./docker/Dockerfile.frontend.dev
     ports:
-      - "5173:80"
+      - "5173:5173"
+    environment:
+      - VITE_BACKEND_URL=http://localhost:3000
+    volumes:
+      - ./frontend:/app/frontend
+      - /app/frontend/node_modules
     depends_on:
       - backend
+  
     
