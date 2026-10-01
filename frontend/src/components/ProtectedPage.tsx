@@ -3,35 +3,34 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function ProtectedPage({
-    children
+  children,
 }: {
-    children: React.ReactNode;
+  children: React.ReactNode;
 }) {
+  const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
 
-    const [isLoading, setIsLoading] = useState(true);
-    const navigate = useNavigate();
+  useEffect(() => {
+    const token = localStorage.getItem("token");
 
-    useEffect(() => {
-        const token = localStorage.getItem("token");
-
-        if (!token) {
-            navigate("/signin");
-            return;
-        }
-
-        setIsLoading(false);
-    }, []);
-
-    if (isLoading) {
-        return (
-            <div className="h-screen flex items-center justify-center">
-                <div className="flex items-center gap-2 text-2xl">
-                    Loading...
-                    <Loader2 className="animate-spin" />
-                </div>
-            </div>
-        );
+    if (!token) {
+      navigate("/signin");
+      return;
     }
 
-    return <>{children}</>;
+    setIsLoading(false);
+  }, [navigate]);
+
+  if (isLoading) {
+    return (
+      <div className="h-screen flex items-center justify-center">
+        <div className="flex items-center gap-2 text-2xl">
+          Loading...
+          <Loader2 className="animate-spin" />
+        </div>
+      </div>
+    );
+  }
+
+  return <>{children}</>;
 }

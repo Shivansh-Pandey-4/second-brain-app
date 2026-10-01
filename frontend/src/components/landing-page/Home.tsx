@@ -5,18 +5,16 @@ import Hero from "./Hero";
 import HowItWorks from "./HowItWorks";
 import Footer from "./Footer";
 
-
 export default function HomePage() {
-
-    return (
-        <div className="min-h-screen overflow-hidden bg-[#07070a] text-white">
-            <Header />
-            <Hero />
-            <Features />
-            <HowItWorks />
-            {/* <Cta /> */}
-            <Contact />
-            <Footer />
-        </div>
-    )
+  return (
+    <div className="min-h-screen overflow-hidden bg-[#07070a] text-white">
+      <Header />
+      <Hero />
+      <Features />
+      <HowItWorks />
+      {/* <Cta /> */}
+      <Contact />
+      <Footer />
+    </div>
+  );
 }

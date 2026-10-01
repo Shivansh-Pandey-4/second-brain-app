@@ -1,46 +1,47 @@
 import mongoose from "mongoose";
 
+const contentSchema = new mongoose.Schema(
+  {
+    type: {
+      type: String,
+      enum: {
+        values: ["tweet", "document", "youtube", "brainthought"],
+        message: `invalid type is given`,
+      },
+      lowercase: true,
+      trim: true,
+      required: true,
+    },
 
-const contentSchema = new mongoose.Schema({
-        type : {
-            type : String,
-            enum : { 
-                values : ["tweet","document","youtube","brainthought"],
-                message : `invalid type is given`
-            },
-            lowercase : true,
-            trim : true,
-            required : true
-        },
+    link: {
+      type: String,
+      trim: true,
+      default: undefined,
+    },
 
-        link : {
-            type : String,
-            trim : true,
-            default : undefined
-        },
+    title: {
+      type: String,
+      required: true,
+      minLength: 2,
+      maxLength: 80,
+      trim: true,
+    },
 
-        title : {
-            type : String,
-            required : true,
-            minLength : 2,
-            maxLength : 80,
-            trim : true
-        },
+    tags: {
+      type: String,
+      lowercase: true,
+      trim: true,
+    },
 
-        tags : {
-            type : String,
-            lowercase : true,
-            trim : true,
-        },
-        
-        userId : {
-                type : mongoose.Schema.Types.ObjectId,
-                required : true,
-                ref : "User"
-            }
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "User",
+    },
+  },
+  { timestamps: true },
+);
 
-     },{timestamps : true})
-
-const ContentModel = mongoose.model("Content",contentSchema);
+const ContentModel = mongoose.model("Content", contentSchema);
 
 export default ContentModel;

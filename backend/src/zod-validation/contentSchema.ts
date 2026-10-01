@@ -1,17 +1,23 @@
-import zod from 'zod';
+import zod from "zod";
 
 export const createContentSchema = zod.object({
-     type : zod.literal(["tweet","document","youtube","brainthought"],{error : "does not include this type"}),
+  type: zod.literal(["tweet", "document", "youtube", "brainthought"], {
+    error: "does not include this type",
+  }),
 
-     link : zod.url({error : "invalid url type"}).optional(),
+  link: zod.url({ error: "invalid url type" }).optional(),
 
-     title : zod.string().trim().min(2,{error : "minimum 2 characters is required"}),
-     tags : zod.string().trim().optional()
+  title: zod
+    .string()
+    .trim()
+    .min(2, { error: "minimum 2 characters is required" }),
+  tags: zod.string().trim().optional(),
 });
 
 export const contentFilterSchema = zod.object({
-     type : zod.literal(["tweet", "document", "youtube", "brainthought", "home"], {error: "does not include this type"})
+  type: zod.literal(["tweet", "document", "youtube", "brainthought", "home"], {
+    error: "does not include this type",
+  }),
 });
-
 
 export type RequestBodyContent = zod.infer<typeof createContentSchema>;

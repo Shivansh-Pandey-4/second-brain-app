@@ -1,35 +1,28 @@
-import Signup from './components/Signup';
-import { createBrowserRouter } from 'react-router-dom';
-import Signin from './components/Signin';
-import PublicContent from './components/PublicContent';
-import ErrorPage from './components/ErrorPage';
-import ProtectedPage from './components/ProtectedPage';
-import UnProtectedPage from './components/UnProtectedPage';
-import Home from './components/landing-page/Home';
-import Dashboard from './components/Dashboard';
-
-function App() {
-
-  return (
-    <div>
-      <Home />
-    </div>
-  )
-}
+import Signup from "./components/Signup";
+import { createBrowserRouter } from "react-router-dom";
+import Signin from "./components/Signin";
+import PublicContent from "./components/PublicContent";
+import ErrorPage from "./components/ErrorPage";
+import ProtectedPage from "./components/ProtectedPage";
+import UnProtectedPage from "./components/UnProtectedPage";
+import Dashboard from "./components/Dashboard";
+import AppHome from "./components/AppHome";
 
 const appRouter = createBrowserRouter([
   {
-    errorElement: <ErrorPage />
+    errorElement: <ErrorPage />,
   },
   {
     path: "/",
-    element: <App />
+    element: <AppHome />,
   },
   {
     path: "/dashboard",
-    element: (<ProtectedPage>
-      <Dashboard />
-    </ProtectedPage>)
+    element: (
+      <ProtectedPage>
+        <Dashboard />
+      </ProtectedPage>
+    ),
   },
   {
     path: "/signup",
@@ -37,7 +30,7 @@ const appRouter = createBrowserRouter([
       <UnProtectedPage>
         <Signup />
       </UnProtectedPage>
-    )
+    ),
   },
   {
     path: "/signin",
@@ -45,12 +38,12 @@ const appRouter = createBrowserRouter([
       <UnProtectedPage>
         <Signin />
       </UnProtectedPage>
-    )
+    ),
   },
   {
     path: "/brain/:hashString",
-    element: <PublicContent />
+    element: <PublicContent />,
   },
-])
+]);
 
 export default appRouter;
