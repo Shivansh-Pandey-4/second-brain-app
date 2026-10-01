@@ -23,15 +23,15 @@ export default function Contact() {
             <div className=" col-span-1 px-5 text-zinc-400 ">
                 <h1 className="text-xl font-medium text-white">Quick Links</h1>
                 <ul className="mt-4">
-                    <Link to={"#Home"}>
+                    <a href={"#hero"}>
                         <li className="transition hover:text-white text-sm mt-1">Home</li>
-                    </Link>
-                    <Link to={"#features"}>
+                    </a>
+                    <a href={"#features"}>
                         <li className="transition hover:text-white text-sm mt-1">Features</li>
-                    </Link>
-                    <Link to={"#howItWorks"}>
+                    </a>
+                    <a href={"#how-it-works"}>
                         <li className="transition hover:text-white text-sm mt-1">How it works</li>
-                    </Link>
+                    </a>
                 </ul>
             </div>
 
