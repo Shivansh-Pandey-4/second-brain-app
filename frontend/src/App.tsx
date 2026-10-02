@@ -1,12 +1,14 @@
-import Signup from "./components/Signup";
 import { createBrowserRouter } from "react-router-dom";
-import Signin from "./components/Signin";
-import PublicContent from "./components/PublicContent";
 import ErrorPage from "./components/ErrorPage";
 import ProtectedPage from "./components/ProtectedPage";
 import UnProtectedPage from "./components/UnProtectedPage";
-import Dashboard from "./components/Dashboard";
 import AppHome from "./components/AppHome";
+import { lazy, Suspense } from "react";
+
+const Dashboard = lazy(() => import("./components/Dashboard"));
+const Signin = lazy(() => import("./components/Signin"));
+const Signup = lazy(() => import("./components/Signup"));
+const PublicContent = lazy(() => import("./components/PublicContent"));
 
 const appRouter = createBrowserRouter([
   {
@@ -20,7 +22,9 @@ const appRouter = createBrowserRouter([
     path: "/dashboard",
     element: (
       <ProtectedPage>
-        <Dashboard />
+        <Suspense fallback={<div>Loading ...</div>}>
+          <Dashboard />
+        </Suspense>
       </ProtectedPage>
     ),
   },
@@ -28,7 +32,9 @@ const appRouter = createBrowserRouter([
     path: "/signup",
     element: (
       <UnProtectedPage>
-        <Signup />
+        <Suspense fallback={<div>Loading ...</div>}>
+          <Signup />
+        </Suspense>
       </UnProtectedPage>
     ),
   },
@@ -36,13 +42,19 @@ const appRouter = createBrowserRouter([
     path: "/signin",
     element: (
       <UnProtectedPage>
-        <Signin />
+        <Suspense fallback={<div>Loading ...</div>}>
+          <Signin />
+        </Suspense>
       </UnProtectedPage>
     ),
   },
   {
     path: "/brain/:hashString",
-    element: <PublicContent />,
+    element: (
+      <Suspense fallback={<div>Loading ...</div>}>
+        <PublicContent />,
+      </Suspense>
+    ),
   },
 ]);
 
